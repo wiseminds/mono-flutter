@@ -81,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () => Navigator.of(context)
             .push(CupertinoPageRoute(
                 builder: (c) => MonoWebView(
-                      apiKey: '',
+                      apiKey: 'test_pk_MPpo8NPVP4NUVzxSynlE',
                       onClosed: () {
                         print('Modal closed');
                       },

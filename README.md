@@ -1,14 +1,52 @@
 # mono_flutter
 
-A new Flutter package project.
 
-## Getting Started
+[![pub package](https://img.shields.io/badge/Pub-0.0.1-green.svg)](https://pub.dartlang.org/packages/mono_flutter)
 
-This project is a starting point for a Dart
-[package](https://flutter.dev/developing-packages/),
-a library module containing code that can be shared easily across
-multiple Flutter or Dart projects.
+A Flutter plugin integrating the official android and ios SDK for Mono (financial data Platform) (https://mono.co/)
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.dev/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+<p align="center">
+  <img src="https://github.com/wiseminds/mono_flutter/raw/master/screenshot.jpeg" alt="Screenshot" />
+</p>
+
+
+## Usage
+
+Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlutter` class.
+
+
+
+Example:
+```dart
+import 'package:mono_flutter/mono_flutter.dart';
+
+void main() async {
+    runApp(App());
+}
+
+class App extends StatelessWidget {
+
+    @override
+    Widget build(BuildContext context) {
+        return  Center(
+          child: RaisedButton(
+        child: Text('launch mono'),
+        onPressed: () => Navigator.of(context)
+            .push(CupertinoPageRoute(
+                builder: (c) => MonoWebView(
+                      apiKey: 'API_KEY',
+                      onClosed: () {
+                        print('Modal closed');
+                      },
+                      onSuccess: (code) {
+                        print('Mono Success $code');
+                      },
+                    )))
+            .then((code) => print(code)),
+      ));
+    }
+}
+
+```
+
+checkout the example project for full implementation
