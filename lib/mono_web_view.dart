@@ -152,9 +152,9 @@ class _MonoWebViewState extends State<MonoWebView> {
         // name: 'top',
         name: 'MonoClientInterface',
         onMessageReceived: (JavascriptMessage message) {
-          print('MonoClientInterface, ${message.message}');
+         if(kDebugMode) print('MonoClientInterface, ${message.message}');
           var res = json.decode(message.message);
-          print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
+          if(kDebugMode)print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
           handleResponse(res as Map<String, dynamic>);
         });
   }
