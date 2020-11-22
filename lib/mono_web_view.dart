@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'mono_flutter_web.dart';
+
 class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
   final String apiKey;
@@ -49,6 +51,7 @@ class _MonoWebViewState extends State<MonoWebView> {
     contentBase64 =
         base64Encode(const Utf8Encoder().convert(_buildHtml(widget.apiKey)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+    if (kIsWeb) MonoFlutterWeb.setup('data:text/html;base64,$contentBase64', widget.key);
     super.initState();
   }
 
@@ -59,66 +62,76 @@ class _MonoWebViewState extends State<MonoWebView> {
         if (widget.onClosed != null) widget.onClosed();
         return true;
       },
-      child: Material(
-        child: GestureDetector(
-            onTap: () {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-            },
-            child: SafeArea(
-              child: Stack(children: [
-                Container(
-                  // margin: EdgeInsets.only(top: 30),
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.transparent)),
-                  child: WebView(
-                    initialUrl:
-                        'data:text/html;base64,$contentBase64', // ??url + widget.apiKey,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (WebViewController webViewController) {
-                      // if (!_controller.isCompleted)
-                      //   _controller.complete(webViewController);
-                      _webViewController = webViewController;
-                    },
-                    onPageStarted: (String url) {
-                      // hasFoward = await _webViewController?.canGoForward();
-                      setState(() {
-                        isLoading = true;
-                        hasError = false;
-                      });
-                    },
-                    javascriptChannels: <JavascriptChannel>[
-                      _monoJavascriptChannel(context),
-                    ].toSet(),
-                    gestureRecognizers: Set()
-                      ..add(Factory<TapGestureRecognizer>(
-                          () => TapGestureRecognizer()
-                            ..onTapDown = (tap) {
-                              SystemChannels.textInput.invokeMethod(
-                                  'TextInput.hide'); //This will hide keyboard ontapdown
-                            })),
-                    debuggingEnabled: kDebugMode,
-                    onWebResourceError: (err) async {
-                      isLoading = false;
-                      setState(() {
-                        hasError = true;
-                      });
-                    },
-                    onPageFinished: (String url) async {
-                      isLoading = false;
-                      setState(() {});
-                      // _webViewController.evaluateJavascript(
-                      //     'MonoClientInterface.postMessage("reyfhgjgf");123;');
-                    },
-                  ),
-                ),
-                if (isLoading)
-                  Center(
-                    child: CupertinoActivityIndicator(),
-                  ),
-                if (hasError) widget.error ?? _error
-              ]),
-            )),
-      ),
+      child: kIsWeb
+          ? AbsorbPointer(
+              child: RepaintBoundary(
+              child: HtmlElementView(
+                key: widget?.key,
+                viewType: 'iframe-' +'data:text/html;base64,$contentBase64',
+              ),
+            ))
+          : Material(
+              child: GestureDetector(
+                  onTap: () {
+                    WidgetsBinding.instance.focusManager.primaryFocus
+                        ?.unfocus();
+                  },
+                  child: SafeArea(
+                    child: Stack(children: [
+                      Container(
+                        // margin: EdgeInsets.only(top: 30),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.transparent)),
+                        child: WebView(
+                          initialUrl:
+                              'data:text/html;base64,$contentBase64', // ??url + widget.apiKey,
+                          javascriptMode: JavascriptMode.unrestricted,
+                          onWebViewCreated:
+                              (WebViewController webViewController) {
+                            // if (!_controller.isCompleted)
+                            //   _controller.complete(webViewController);
+                            _webViewController = webViewController;
+                          },
+                          onPageStarted: (String url) {
+                            // hasFoward = await _webViewController?.canGoForward();
+                            setState(() {
+                              isLoading = true;
+                              hasError = false;
+                            });
+                          },
+                          javascriptChannels: <JavascriptChannel>[
+                            _monoJavascriptChannel(context),
+                          ].toSet(),
+                          gestureRecognizers: Set()
+                            ..add(Factory<TapGestureRecognizer>(
+                                () => TapGestureRecognizer()
+                                  ..onTapDown = (tap) {
+                                    SystemChannels.textInput.invokeMethod(
+                                        'TextInput.hide'); //This will hide keyboard ontapdown
+                                  })),
+                          debuggingEnabled: kDebugMode,
+                          onWebResourceError: (err) async {
+                            isLoading = false;
+                            setState(() {
+                              hasError = true;
+                            });
+                          },
+                          onPageFinished: (String url) async {
+                            isLoading = false;
+                            setState(() {});
+                            // _webViewController.evaluateJavascript(
+                            //     'MonoClientInterface.postMessage("reyfhgjgf");123;');
+                          },
+                        ),
+                      ),
+                      if (isLoading)
+                        Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                      if (hasError) widget.error ?? _error
+                    ]),
+                  )),
+            ),
     );
   }
 

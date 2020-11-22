@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mono_flutter/mono_web_view.dart';
+import 'package:mono_flutter/mono_flutter.dart';
 
 void main() {
   runApp(MyApp());
@@ -78,18 +78,32 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
           child: RaisedButton(
         child: Text('launch mono'),
-        onPressed: () => Navigator.of(context)
-            .push(CupertinoPageRoute(
-                builder: (c) => MonoWebView(
-                      apiKey: '',
-                      onClosed: () {
-                        print('Modal closed');
-                      },
-                      onSuccess: (code) {
-                        print('Mono Success $code');
-                      },
-                    )))
-            .then((code) => print(code)),
+        onPressed: () {
+          showDialog(
+              context: context,
+              builder: (c) => MonoFlutter.buildPage(
+                    context, 'test_pk_MPpo8NPVP4NUVzxSynlE',
+                    // onClosed: () {
+                    //   print('Modal closed');
+                    // },
+                    // onSuccess: (code) {
+                    //   print('Mono Success $code');
+                    // },
+                  ));
+
+          // Navigator.of(context)
+          //     .push(CupertinoPageRoute(
+          //         builder: (c) => MonoFlutter.buildPage(
+          //               context, 'test_pk_MPpo8NPVP4NUVzxSynlE',
+          //               // onClosed: () {
+          //               //   print('Modal closed');
+          //               // },
+          //               // onSuccess: (code) {
+          //               //   print('Mono Success $code');
+          //               // },
+          //             )))
+          //     .then((code) => print(code));
+        },
       )),
     );
   }
