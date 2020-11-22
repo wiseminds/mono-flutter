@@ -71,7 +71,8 @@ class _MonoWebViewState extends State<MonoWebView> {
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
                   child: WebView(
-                    initialUrl: 'data:text/html;base64,$contentBase64',// ??url + widget.apiKey,
+                    initialUrl:
+                        'data:text/html;base64,$contentBase64', // ??url + widget.apiKey,
                     javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (WebViewController webViewController) {
                       // if (!_controller.isCompleted)
@@ -152,9 +153,10 @@ class _MonoWebViewState extends State<MonoWebView> {
         // name: 'top',
         name: 'MonoClientInterface',
         onMessageReceived: (JavascriptMessage message) {
-         if(kDebugMode) print('MonoClientInterface, ${message.message}');
+          if (kDebugMode) print('MonoClientInterface, ${message.message}');
           var res = json.decode(message.message);
-          if(kDebugMode)print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
+          if (kDebugMode)
+            print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
           handleResponse(res as Map<String, dynamic>);
         });
   }
@@ -182,7 +184,7 @@ class _MonoWebViewState extends State<MonoWebView> {
     }
   }
 
-/// build Mono html page 
+  /// build Mono html page
   String _buildHtml(String key) => ''' <!DOCTYPE html>
             <html lang="en">
                 <head>

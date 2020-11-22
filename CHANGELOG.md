@@ -1,3 +1,5 @@
+## [0.0.4] - 22-11-2020.
+Formated code with dart formatter
 ## [0.0.3] - 22-11-2020.
 Remove print statement from release mode
 ## [0.0.2] - 22-11-2020.
