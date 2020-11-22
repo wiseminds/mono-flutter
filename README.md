@@ -6,8 +6,8 @@
 A Flutter plugin integrating the official android and ios SDK for Mono (financial data Platform) (https://mono.co/)
 
 <p align="center">
-  <img src="screenshot.jpeg" alt="Screenshot" height="300" />
-  <img src="screenshot2.jpeg" alt="Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot.jpeg" alt="Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot2.jpeg" alt="Screenshot" height="300" />
 </p>
 
 

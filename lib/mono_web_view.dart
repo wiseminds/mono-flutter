@@ -8,9 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-
 class MonoWebView extends StatefulWidget {
-
   /// Public API key gotten from your mono dashboard
   final String apiKey;
 
@@ -42,8 +40,14 @@ class _MonoWebViewState extends State<MonoWebView> {
   bool isLoading = false;
   bool hasError = false;
 
+  String contentBase64;
+
+  // await controller.loadUrl('data:text/html;base64,$contentBase64');
+
   @override
   void initState() {
+    contentBase64 =
+        base64Encode(const Utf8Encoder().convert(_buildHtml(widget.apiKey)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
   }
@@ -67,7 +71,7 @@ class _MonoWebViewState extends State<MonoWebView> {
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
                   child: WebView(
-                    initialUrl: url + widget.apiKey,
+                    initialUrl: 'data:text/html;base64,$contentBase64',// ??url + widget.apiKey,
                     javascriptMode: JavascriptMode.unrestricted,
                     onWebViewCreated: (WebViewController webViewController) {
                       // if (!_controller.isCompleted)
@@ -101,6 +105,8 @@ class _MonoWebViewState extends State<MonoWebView> {
                     onPageFinished: (String url) async {
                       isLoading = false;
                       setState(() {});
+                      // _webViewController.evaluateJavascript(
+                      //     'MonoClientInterface.postMessage("reyfhgjgf");123;');
                     },
                   ),
                 ),
@@ -114,7 +120,6 @@ class _MonoWebViewState extends State<MonoWebView> {
       ),
     );
   }
-
 
   /// A default overlay widget to display over webview if page fails to load
   Widget get _error => Container(
@@ -144,8 +149,10 @@ class _MonoWebViewState extends State<MonoWebView> {
   /// javascript channel for events sent by mono
   JavascriptChannel _monoJavascriptChannel(BuildContext context) {
     return JavascriptChannel(
+        // name: 'top',
         name: 'MonoClientInterface',
         onMessageReceived: (JavascriptMessage message) {
+          print('MonoClientInterface, ${message.message}');
           var res = json.decode(message.message);
           print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
           handleResponse(res as Map<String, dynamic>);
@@ -157,21 +164,53 @@ class _MonoWebViewState extends State<MonoWebView> {
     String key = body['type'];
     if (body != null && key != null) {
       switch (key) {
-        // case 'mono.connect.widget.account_linked':
+        case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
           if (response == null) return;
           var code = response['code'];
           if (widget.onSuccess != null) widget.onSuccess(code);
-          Navigator.of(context).pop(code);
+          if (mounted) Navigator.of(context).pop(code);
           break;
         case 'mono.connect.widget.closed':
-          // case 'mono.modal.closed':
+        case 'mono.modal.closed':
           if (widget.onClosed != null) widget.onClosed();
-          Navigator.of(context).pop();
+          if (mounted) Navigator.of(context).pop();
           break;
         default:
       }
     }
   }
+
+/// build Mono html page 
+  String _buildHtml(String key) => ''' <!DOCTYPE html>
+            <html lang="en">
+                <head>
+                  <meta charset="UTF-8">
+                  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                  <title>Mono Connect</title>
+                </head>
+                <body onload="setupMonoConnect()" style="background-color:#fff;height:100vh;overflow: scroll;">
+                  <script src="https://connect.withmono.com/connect.js"></script>
+                  <script type="text/javascript">
+                    window.onload = setupMonoConnect;
+                    function setupMonoConnect() {
+                      const options = {
+                        onSuccess: function(data) {
+                          const response = {"type":"mono.modal.linked", response: {...data}}
+                          MonoClientInterface.postMessage(JSON.stringify(response))
+                        },
+                        onClose: function() {
+                          const response = {type: 'mono.modal.closed', }
+                          MonoClientInterface.postMessage(JSON.stringify(response))
+                        }
+                      };
+                      const MonoConnect = new Connect("$key", options);
+                      MonoConnect.setup();
+                      MonoConnect.open()
+                    }
+                  </script>
+                </body>
+            </html>''';
 }
