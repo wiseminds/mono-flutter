@@ -1,3 +1,5 @@
+## [0.0.5] - 12-03-2022.
+Added null-safety
 ## [0.0.4] - 22-11-2020.
 Formated code with dart formatter
 ## [0.0.3] - 22-11-2020.

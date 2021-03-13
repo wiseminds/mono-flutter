@@ -13,34 +13,33 @@ class MonoWebView extends StatefulWidget {
   final String apiKey;
 
   /// a function called when transaction succeeds
-  final Function(String code) onSuccess;
+  final Function(String code)? onSuccess;
 
   /// a function called when user clicks the close buton on mono's page
-  final Function onClosed;
+  final Function()? onClosed;
 
   /// An overlay widget to display over webview if page fails to load
-  final Widget error;
+  final Widget? error;
 
   const MonoWebView(
-      {Key key,
-      @required this.apiKey,
+      {Key? key,
+      required this.apiKey,
       this.error,
       this.onSuccess,
       this.onClosed})
-      : assert(apiKey != null, 'API key cannot be null'),
-        super(key: key);
+      : super(key: key);
 
   @override
   _MonoWebViewState createState() => _MonoWebViewState();
 }
 
 class _MonoWebViewState extends State<MonoWebView> {
-  WebViewController _webViewController;
+  late WebViewController _webViewController;
   final url = 'https://connect.withmono.com/?key=';
   bool isLoading = false;
   bool hasError = false;
 
-  String contentBase64;
+  late String contentBase64;
 
   // await controller.loadUrl('data:text/html;base64,$contentBase64');
 
@@ -56,13 +55,13 @@ class _MonoWebViewState extends State<MonoWebView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (widget.onClosed != null) widget.onClosed();
+        if (widget.onClosed != null) widget.onClosed!();
         return true;
       },
       child: Material(
         child: GestureDetector(
             onTap: () {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+              WidgetsBinding.instance?.focusManager.primaryFocus?.unfocus();
             },
             child: SafeArea(
               child: Stack(children: [
@@ -131,7 +130,7 @@ class _MonoWebViewState extends State<MonoWebView> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: RaisedButton(
+            child: ElevatedButton(
                 child: Text('Reload'),
                 onPressed: () {
                   _webViewController.reload();
@@ -162,21 +161,21 @@ class _MonoWebViewState extends State<MonoWebView> {
   }
 
   /// parse event from javascript channel
-  void handleResponse(Map<String, dynamic> body) {
-    String key = body['type'];
-    if (body != null && key != null) {
+  void handleResponse(Map<String, dynamic>? body) {
+    String? key = body!['type'];
+    if (key != null) {
       switch (key) {
-        case 'mono.connect.widget.account_linked':
+        // case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
           if (response == null) return;
           var code = response['code'];
-          if (widget.onSuccess != null) widget.onSuccess(code);
+          if (widget.onSuccess != null) widget.onSuccess!(code);
           if (mounted) Navigator.of(context).pop(code);
           break;
-        case 'mono.connect.widget.closed':
+        // case 'mono.connect.widget.closed':
         case 'mono.modal.closed':
-          if (widget.onClosed != null) widget.onClosed();
+          if (widget.onClosed != null) widget.onClosed!();
           if (mounted) Navigator.of(context).pop();
           break;
         default:
