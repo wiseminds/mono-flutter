@@ -1,6 +1,6 @@
 name: mono_flutter
 description: A Flutter plugin integrating the official android and ios SDK for Mono https://mono.co
-version: 0.0.5
+version: 0.1.0
 homepage: https://github.com/wiseminds/mono-flutter
 
 environment:
@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  webview_flutter: ^2.0.2
+  webview_flutter: ^3.0.0
 
 dev_dependencies:
   flutter_test:
