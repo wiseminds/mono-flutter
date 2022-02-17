@@ -6,10 +6,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mono_flutter/extensions/map.dart';
+import 'package:mono_flutter/extensions/num.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'models/mono_event.dart';
 import 'models/mono_event_data.dart';
+import 'mono_html.dart';
 
 class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
@@ -41,7 +44,8 @@ class MonoWebView extends StatefulWidget {
       this.onSuccess,
       this.onClosed,
       this.onLoad,
-      this.reference, this.config})
+      this.reference,
+      this.config})
       : super(key: key);
 
   @override
@@ -60,8 +64,8 @@ class _MonoWebViewState extends State<MonoWebView> {
 
   @override
   void initState() {
-    contentBase64 = base64Encode(const Utf8Encoder()
-        .convert(_buildHtml(widget.apiKey, widget.reference, widget.config)));
+    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
+        widget.apiKey, widget.reference ?? 15.getRandomString, widget.config)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
   }
@@ -181,12 +185,7 @@ class _MonoWebViewState extends State<MonoWebView> {
     String? key = body!['type'];
     if (key != null) {
       switch (key) {
-        case 'onEvent':
-          final event = MonoEvent.unknown
-              .fromString((body['eventName'] as String?) ?? '');
-          if (widget.onEvent != null)
-            widget.onEvent!(event, MonoEventData.fromJson(body));
-          break;
+
         // case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
@@ -203,52 +202,15 @@ class _MonoWebViewState extends State<MonoWebView> {
         case 'mono.modal.onLoad':
           if (mounted && widget.onLoad != null) widget.onLoad!();
           break;
+
         default:
+          print('onEvent');
+
+          final event = MonoEvent.unknown.fromString(key.split('.').last);
+          if (widget.onEvent != null)
+            widget.onEvent!(event, MonoEventData.fromJson(body.getKey('data')));
+          break;
       }
     }
   }
-
-  /// build Mono html page
-  String _buildHtml(String key, [String? reference, Map<String, dynamic>? config]) =>
-      ''' <!DOCTYPE html>
-            <html lang="en">
-                <head>
-                  <meta charset="UTF-8">
-                  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-                  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                  <title>Mono Connect</title>
-                </head>
-                <body onload="setupMonoConnect()" style="background-color:#fff;height:100vh;overflow: scroll;">
-                  <script src="https://connect.withmono.com/connect.js"></script>
-                  <script type="text/javascript">
-                    window.onload = setupMonoConnect;
-                    function setupMonoConnect() {
-                      const options = {
-                         reference: `$reference`.length > 0 ? `$reference` : null,
-                        onSuccess: function(data) {
-                          const response = {"type":"mono.modal.linked", response: {...data}}
-                          MonoClientInterface.postMessage(JSON.stringify(response))
-                        },
-                         onEvent: (eventName, data) => {
-                         const response = {type: 'mono.modal.closed', data }
-                          MonoClientInterface.postMessage(JSON.stringify(response))
-                        }
-                        onClose: function() {
-                          const response = {type: 'mono.modal.closed', }
-                          MonoClientInterface.postMessage(JSON.stringify(response))
-                        }
-                          onLoad: function() {
-                          const response = {type: 'mono.modal.onLoad', }
-                          MonoClientInterface.postMessage(JSON.stringify(response))
-                        }
-                      };
-                      const MonoConnect = new Connect("$key", options);
-                      const configJson = JSON.parse(`$config`)
- 
-                      MonoConnect.setup(configJson);
-                      MonoConnect.open()
-                    }
-                  </script>
-                </body>
-            </html>''';
 }

@@ -34,8 +34,8 @@ enum MonoEvent {
 
 extension M on MonoEvent {
   /// convert a string value to a Mono event
-    MonoEvent fromString(String value) {
-    switch (value) {
+  MonoEvent fromString(String value) {
+    switch (value.toUpperCase()) {
       case 'INSTITUTION_SELECTED':
         return MonoEvent.institutionSelected;
       case 'AUTH_METHOD_SWITCHED':

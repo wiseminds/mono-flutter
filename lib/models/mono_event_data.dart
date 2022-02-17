@@ -1,10 +1,6 @@
-
 import '../extensions/map.dart';
 
 class MonoEventData {
-  /// type of event mono.connect.xxxx
-  final String type;
-
   /// reference passed through the connect config
   final String? reference;
 
@@ -36,7 +32,7 @@ class MonoEventData {
   /// unix timestamp of the event as an Integer
   final int timestamp;
 
-  MonoEventData(this.type,
+  MonoEventData(
       {this.reference,
       this.pageName,
       this.prevAuthMethod,
@@ -49,7 +45,6 @@ class MonoEventData {
       required this.timestamp});
 
   factory MonoEventData.fromJson(Map<String, dynamic> json) => MonoEventData(
-        'event',
         timestamp: json.getKey<int>('timestamp') ??
             DateTime.now().millisecondsSinceEpoch,
         reference: json.getKey<String>('reference'),
@@ -62,4 +57,20 @@ class MonoEventData {
         selectedAccountsCount: json.getKey<int>('selectedAccountsCount'),
         institution: json['institution'] as Map<String, dynamic>?,
       );
+
+  Map<String, dynamic> get toMap => {
+        'timestamp': timestamp,
+        'reference': reference,
+        'authMethod': authMethod,
+        'errorMessage': errorMessage,
+        'errorType': errorType,
+        'mfaType': mfaType,
+        'pageName': pageName,
+        'prevAuthMethod': prevAuthMethod,
+        'selectedAccountsCount': selectedAccountsCount,
+        'institution': institution,
+      };
+
+  @override
+  String toString() => toMap.toString();
 }
