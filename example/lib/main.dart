@@ -69,13 +69,19 @@ class _MyHomePageState extends State<MyHomePage> {
             .push(CupertinoPageRoute(
                 builder: (c) => MonoWebView(
                       apiKey: '',
+                      config: {
+                        "selectedInstitution": {
+                          "id": "5f2d08c060b92e2888287706",
+                          "auth_method": "internet_banking"
+                        }
+                      },
                       onEvent: (event, data) {
                         print('event: $event, data: $data');
                       },
                       onClosed: () {
                         print('Modal closed');
                       },
-                      onLoad: (){
+                      onLoad: () {
                         print('Mono loaded successfully');
                       },
                       onSuccess: (code) {

@@ -15,6 +15,8 @@ class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
   final String apiKey;
 
+  final String? reference;
+
   /// a function called when transaction succeeds
   final Function(String code)? onSuccess;
 
@@ -29,6 +31,8 @@ class MonoWebView extends StatefulWidget {
 
   final Function(MonoEvent event, MonoEventData data)? onEvent;
 
+  final Map<String, dynamic>? config;
+
   const MonoWebView(
       {Key? key,
       required this.apiKey,
@@ -36,7 +40,8 @@ class MonoWebView extends StatefulWidget {
       this.onEvent,
       this.onSuccess,
       this.onClosed,
-      this.onLoad})
+      this.onLoad,
+      this.reference, this.config})
       : super(key: key);
 
   @override
@@ -55,8 +60,8 @@ class _MonoWebViewState extends State<MonoWebView> {
 
   @override
   void initState() {
-    contentBase64 =
-        base64Encode(const Utf8Encoder().convert(_buildHtml(widget.apiKey)));
+    contentBase64 = base64Encode(const Utf8Encoder()
+        .convert(_buildHtml(widget.apiKey, widget.reference, widget.config)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
   }
@@ -107,6 +112,7 @@ class _MonoWebViewState extends State<MonoWebView> {
                             })),
                     debuggingEnabled: kDebugMode,
                     onWebResourceError: (err) async {
+                      print(err);
                       isLoading = false;
                       setState(() {
                         hasError = true;
@@ -194,7 +200,7 @@ class _MonoWebViewState extends State<MonoWebView> {
           if (widget.onClosed != null) widget.onClosed!();
           if (mounted) Navigator.of(context).pop();
           break;
-        case 'onLoad':
+        case 'mono.modal.onLoad':
           if (mounted && widget.onLoad != null) widget.onLoad!();
           break;
         default:
@@ -203,7 +209,8 @@ class _MonoWebViewState extends State<MonoWebView> {
   }
 
   /// build Mono html page
-  String _buildHtml(String key) => ''' <!DOCTYPE html>
+  String _buildHtml(String key, [String? reference, Map<String, dynamic>? config]) =>
+      ''' <!DOCTYPE html>
             <html lang="en">
                 <head>
                   <meta charset="UTF-8">
@@ -217,17 +224,28 @@ class _MonoWebViewState extends State<MonoWebView> {
                     window.onload = setupMonoConnect;
                     function setupMonoConnect() {
                       const options = {
+                         reference: `$reference`.length > 0 ? `$reference` : null,
                         onSuccess: function(data) {
                           const response = {"type":"mono.modal.linked", response: {...data}}
                           MonoClientInterface.postMessage(JSON.stringify(response))
                         },
+                         onEvent: (eventName, data) => {
+                         const response = {type: 'mono.modal.closed', data }
+                          MonoClientInterface.postMessage(JSON.stringify(response))
+                        }
                         onClose: function() {
                           const response = {type: 'mono.modal.closed', }
                           MonoClientInterface.postMessage(JSON.stringify(response))
                         }
+                          onLoad: function() {
+                          const response = {type: 'mono.modal.onLoad', }
+                          MonoClientInterface.postMessage(JSON.stringify(response))
+                        }
                       };
                       const MonoConnect = new Connect("$key", options);
-                      MonoConnect.setup();
+                      const configJson = JSON.parse(`$config`)
+ 
+                      MonoConnect.setup(configJson);
                       MonoConnect.open()
                     }
                   </script>
