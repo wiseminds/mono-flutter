@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+import 'models/mono_event.dart';
+import 'models/mono_event_data.dart';
+
 class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
   final String apiKey;
@@ -15,18 +18,25 @@ class MonoWebView extends StatefulWidget {
   /// a function called when transaction succeeds
   final Function(String code)? onSuccess;
 
-  /// a function called when user clicks the close buton on mono's page
+  /// a function called when user clicks the close button on mono's page
   final Function()? onClosed;
+
+  /// a function called when the mono widget loads
+  final Function()? onLoad;
 
   /// An overlay widget to display over webview if page fails to load
   final Widget? error;
+
+  final Function(MonoEvent event, MonoEventData data)? onEvent;
 
   const MonoWebView(
       {Key? key,
       required this.apiKey,
       this.error,
+      this.onEvent,
       this.onSuccess,
-      this.onClosed})
+      this.onClosed,
+      this.onLoad})
       : super(key: key);
 
   @override
@@ -165,6 +175,12 @@ class _MonoWebViewState extends State<MonoWebView> {
     String? key = body!['type'];
     if (key != null) {
       switch (key) {
+        case 'onEvent':
+          final event = MonoEvent.unknown
+              .fromString((body['eventName'] as String?) ?? '');
+          if (widget.onEvent != null)
+            widget.onEvent!(event, MonoEventData.fromJson(body));
+          break;
         // case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
@@ -177,6 +193,9 @@ class _MonoWebViewState extends State<MonoWebView> {
         case 'mono.modal.closed':
           if (widget.onClosed != null) widget.onClosed!();
           if (mounted) Navigator.of(context).pop();
+          break;
+        case 'onLoad':
+          if (mounted && widget.onLoad != null) widget.onLoad!();
           break;
         default:
       }

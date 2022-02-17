@@ -48,8 +48,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-   
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -71,8 +69,14 @@ class _MyHomePageState extends State<MyHomePage> {
             .push(CupertinoPageRoute(
                 builder: (c) => MonoWebView(
                       apiKey: '',
+                      onEvent: (event, data) {
+                        print('event: $event, data: $data');
+                      },
                       onClosed: () {
                         print('Modal closed');
+                      },
+                      onLoad: (){
+                        print('Mono loaded successfully');
                       },
                       onSuccess: (code) {
                         print('Mono Success $code');
