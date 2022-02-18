@@ -10,14 +10,24 @@ A Flutter plugin integrating the official android and ios SDK for Mono (financia
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot2.jpeg" alt="Screenshot" height="300" />
 </p>
 
+<p align="center">
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/web-screenshot1.png" alt="Web Screenshot" height="300" />
+  
+</p><p align="center">
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/web-screenshot2.png" alt="Web Screenshot" height="300" />
+  
+</p>
+
 
 ## Usage
 
 Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlutter` class.
 
 
-### for web support ass the following to index.html
-     ```HTML
+for web support ass the following to index.html :
+
+ ``` HTML 
+
  <script src="https://connect.withmono.com/connect.js"></script>
   <script>
     function setupMonoConnect(key, reference, config) {
@@ -36,6 +46,7 @@ Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlut
       MonoConnect.open()
     }
   </script>
+
  ```
 
 Example:

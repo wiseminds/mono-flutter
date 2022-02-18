@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ElevatedButton(
         child: Text('launch mono'),
         onPressed: () {
-          if (kIsWeb) {
+          if (kIsWeb){
             return MonoFlutter().launch(
                 '',
                 '',
@@ -79,8 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     "id": "5f2d08bf60b92e2888287703",
                     "auth_method": "internet_banking"
                   }
-                }));
-          }
+                }));}
           Navigator.of(context)
               .push(CupertinoPageRoute(
                   builder: (c) => MonoWebView(
