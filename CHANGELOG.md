@@ -1,4 +1,6 @@
 ## [1.0.0-dev.1] -18-02-2022
+Early web support, added screenshot
+## [1.0.0-dev.1] -18-02-2022
 Early web support
 ## [0.1.0] - 12-12-2022.
 upgraded dependencies
