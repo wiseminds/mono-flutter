@@ -16,6 +16,10 @@ A Flutter plugin integrating the official android and ios SDK for Mono (financia
 Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlutter` class.
 
 
+### for web support ass the following to index.html
+     ```HTML
+ <script src="https://connect.withmono.com/connect.js"></script>
+ ```
 
 Example:
 ```dart

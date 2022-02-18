@@ -10,11 +10,19 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter  
   webview_flutter: ^3.0.0
+  js: ^0.6.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  # plugin_platform_interface: ^2.0.0
  
-flutter: 
+flutter:
+  plugin:
+    platforms:
+      web:
+        dartPluginClass: MonoFlutterWeb
+        fileName: mono_flutter_web.dart
