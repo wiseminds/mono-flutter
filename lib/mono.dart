@@ -10,6 +10,5 @@ external void setup(Object obj);
 @JS('MonoConnect.open')
 external void open();
 
-
 @JS('setupMonoConnect')
-external void setupMonoConnect(String key, String reference);
+external void setupMonoConnect(String key, [String? reference, String? config]);

@@ -19,6 +19,23 @@ Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlut
 ### for web support ass the following to index.html
      ```HTML
  <script src="https://connect.withmono.com/connect.js"></script>
+  <script>
+    function setupMonoConnect(key, reference, config) {
+      const options = {
+        key,
+         reference,
+        onSuccess: onSuccess,
+        onEvent: onEvent,
+        onClose: onClose,
+        onLoad: onLoad
+      };
+      const MonoConnect = new Connect(options);
+      const configJson = JSON.parse(config ?? `{}`);
+
+      MonoConnect.setup(configJson);
+      MonoConnect.open()
+    }
+  </script>
  ```
 
 Example:
@@ -36,7 +53,18 @@ class App extends StatelessWidget {
         return  Center(
           child: RaisedButton(
         child: Text('launch mono'),
-        onPressed: () => Navigator.of(context)
+        onPressed: () {
+           if (kIsWeb){
+            return MonoFlutter().launch(
+                'API_KEY',
+                '',
+                jsonEncode({
+                  "selectedInstitution": {
+                    "id": "5f2d08bf60b92e2888287703",
+                    "auth_method": "internet_banking"
+                  }
+                }));}
+                Navigator.of(context)
             .push(CupertinoPageRoute(
                 builder: (c) => MonoWebView(
                       apiKey: 'API_KEY',
@@ -47,7 +75,8 @@ class App extends StatelessWidget {
                         print('Mono Success $code');
                       },
                     )))
-            .then((code) => print(code)),
+            .then((code) => print(code));
+            },
       ));
     }
 }

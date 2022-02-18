@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -12,40 +13,30 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>example</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
   <script src="https://connect.withmono.com/connect.js"></script>
   <script>
-      function setupMonoConnect(key, reference) {
-    const options = {
-       reference: reference,
-      onSuccess:  (data) => {
-        const response = {"type":"mono.modal.linked", response: {...data}}
-        // MonoClientInterface.postMessage(JSON.stringify(response))
-      },
-       onEvent: (eventName, data) => {
-       const response = { type: 'onEvent', eventName, data }
-        // MonoClientInterface.postMessage(JSON.stringify(response))
-      },
-      onClose: ()=> {
-        const response = {type: 'mono.modal.closed', }
-        // MonoClientInterface.postMessage(JSON.stringify(response))
-      },
-        onLoad: ()=> {
-        const response = {type: 'mono.modal.onLoad', }
-        // MonoClientInterface.postMessage(JSON.stringify(response))
-      }
-    };
-    const MonoConnect = new Connect(key, options);
-    // const configJson = JSON.parse(`${jsonEncode(config ?? {})}`)
+    function setupMonoConnect(key, reference, config) {
+      const options = {
+        key,
+         reference,
+        onSuccess: onSuccess,
+        onEvent: onEvent,
+        onClose: onClose,
+        onLoad: onLoad
+      };
+      const MonoConnect = new Connect(options);
+      const configJson = JSON.parse(config ?? `{}`);
 
-    MonoConnect.setup();
-    MonoConnect.open()
-  }
+      MonoConnect.setup(configJson);
+      MonoConnect.open()
+    }
   </script>
 
   <!-- This script installs service_worker.js to provide PWA functionality to
@@ -60,4 +51,5 @@
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
+
 </html>
