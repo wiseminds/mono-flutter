@@ -11,10 +11,10 @@ A Flutter plugin integrating the official android and ios SDK for Mono (financia
 </p>
 
 <p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot1.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot.png" alt="Web Screenshot" height="300" />
   
 </p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot2.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot1.png" alt="Web Screenshot" height="300" />
   
 </p>
 
