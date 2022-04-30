@@ -1,0 +1,26 @@
+name: Flutter-CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    
+
+jobs:
+      build:
+        runs-on: ubuntu-latest
+        steps:
+        - uses: actions/checkout@v2
+        - uses: subosito/flutter-action@v1
+          with:
+            channel: stable
+        - run: cd example  
+        - run: flutter build web
+        # - run: flutter build ios
+        - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: build/web # The folder the action should deploy.
+         
