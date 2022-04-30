@@ -16,7 +16,7 @@ jobs:
               channel: stable
             run: cd example  
             run: flutter build web
-          # - run: flutter build ios
+            
           - name: Deploy
             uses: peaceiris/actions-gh-pages@v3
             with:
