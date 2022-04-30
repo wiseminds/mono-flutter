@@ -5,20 +5,31 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    
+
 jobs:
-      build:
-        runs-on: ubuntu-latest
-        steps:
-          - uses: actions/checkout@v2
-          - uses: subosito/flutter-action@v1
-            with:
-              channel: stable
-            run: cd example  
-            run: flutter build web
-            
-          - name: Deploy
-            uses: peaceiris/actions-gh-pages@v3
-            with:
-              github_token: ${{ secrets.GITHUB_TOKEN }}
-              publish_dir: ./build/web 
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3 
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: stable
+           
+
+      - name: Install dependencies
+        run: cd example  
+        run: flutter build web
+
+      # - name: Analyze project source
+      #   run: dart analyze
+
+      # - name: Run tests
+      #   run: dart test   
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web 
+  
