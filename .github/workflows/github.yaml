@@ -15,10 +15,12 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: stable
-           
+
+
+      - name: Go to example folder
+        run: cd example             
 
       - name: Install dependencies
-        run: cd example  
         run: flutter build web
 
       # - name: Analyze project source
