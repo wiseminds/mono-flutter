@@ -6,7 +6,6 @@ on:
     branches: [main]
   workflow_dispatch:
     
-
 jobs:
       build:
         runs-on: ubuntu-latest
@@ -18,9 +17,8 @@ jobs:
         - run: cd example  
         - run: flutter build web
         # - run: flutter build ios
-        - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@v4.3.3
+        - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          branch: gh-pages # The branch the action should deploy to.
-          folder: build/web # The folder the action should deploy.
-         
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web 
