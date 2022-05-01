@@ -1,7 +1,7 @@
 # mono_flutter
 
 
-[![pub package](https://img.shields.io/badge/Pub-0.0.1-green.svg)](https://pub.dartlang.org/packages/mono_flutter)
+[![pub package](https://img.shields.io/badge/Pub-1.0.0-green.svg)](https://pub.dartlang.org/packages/mono_flutter)
 
 A Flutter plugin integrating the official android and ios SDK for Mono (financial data Platform) (https://mono.co/)
 
