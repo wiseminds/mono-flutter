@@ -1,11 +1,11 @@
 {
-    "name": "example",
-    "short_name": "example",
+    "name": "Mono Connect",
+    "short_name": "mono_flutter",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "theme_color": "#0056bb",
+    "description": "Reliably access bank accounts from anywhere. ",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
