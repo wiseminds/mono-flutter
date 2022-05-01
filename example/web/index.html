@@ -35,10 +35,13 @@
       const configJson = JSON.parse(config ?? `{}`);
 
       MonoConnect.setup(configJson);
-      MonoConnect.open()
+      
       if(authCode && String(authCode).length > 0) {
         MonoConnect.reauthorise(authCode);
       }
+
+      MonoConnect.open()
+     
     }
   </script>
 

@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
             return MonoFlutter().launch(
               context,
               'test_pk_qtys19MqGkmrkGk9RDjc',
-              authCode: 'code_sGjE1Zh48lFR8vr3FkrD',
+              // reAuthCode: 'code_sGjE1Zh48lFR8vr3FkrD',
               reference: DateTime.now().millisecondsSinceEpoch.toString(),
               config: jsonEncode({
                 "selectedInstitution": {
