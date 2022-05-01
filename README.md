@@ -9,7 +9,7 @@ Mono Connect.js is a quick and secure way to link bank accounts to Mono from wit
 
 For accessing customer accounts and interacting with Mono's API (Identity, Transactions, Income, DirectPay) use the server-side Mono API For complete information about Mono Connect, head to the docs. https://docs.mono.co/docs/ .
 
-###Getting Started
+### Getting Started
 Register on the [Mono](https://app.mono.co/dashboard) website and get your public and secret keys.
 Setup a server to [exchange tokens](https://docs.mono.co/reference/authentication-endpoint) to access user financial data with your Mono secret key.
 
