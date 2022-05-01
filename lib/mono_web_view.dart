@@ -45,7 +45,7 @@ class MonoWebView extends StatefulWidget {
       this.onClosed,
       this.onLoad,
       this.reference,
-      this.config, this.authCode})
+      this.config, this.reAuthCode})
       : super(key: key);
 
   @override
@@ -65,7 +65,7 @@ class _MonoWebViewState extends State<MonoWebView> {
   @override
   void initState() {
     contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
-        widget.apiKey, widget.reference ?? 15.getRandomString, widget.config, widget.authCode)));
+        widget.apiKey, widget.reference ?? 15.getRandomString, widget.config, widget.reAuthCode)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
   }
