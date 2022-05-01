@@ -18,7 +18,7 @@ class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
   final String apiKey;
 
-  final String? reference;
+  final String? reference, reAuthCode;
 
   /// a function called when transaction succeeds
   final Function(String code)? onSuccess;
@@ -45,7 +45,7 @@ class MonoWebView extends StatefulWidget {
       this.onClosed,
       this.onLoad,
       this.reference,
-      this.config})
+      this.config, this.authCode})
       : super(key: key);
 
   @override
@@ -65,7 +65,7 @@ class _MonoWebViewState extends State<MonoWebView> {
   @override
   void initState() {
     contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
-        widget.apiKey, widget.reference ?? 15.getRandomString, widget.config)));
+        widget.apiKey, widget.reference ?? 15.getRandomString, widget.config, widget.authCode)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
   }
