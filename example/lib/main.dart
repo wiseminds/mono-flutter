@@ -70,41 +70,56 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ElevatedButton(
         child: Text('launch mono'),
         onPressed: () {
-          if (kIsWeb) {
+          // if (kIsWeb) {
             return MonoFlutter().launch(
-                'test_pk_qtys19MqGkmrkGk9RDjc',
-                DateTime.now().millisecondsSinceEpoch.toString(),
-                jsonEncode({
-                  "selectedInstitution": {
-                    "id": "5f2d08bf60b92e2888287703",
-                    "auth_method": "internet_banking"
-                  }
-                }));
-          }
-          Navigator.of(context)
-              .push(CupertinoPageRoute(
-                  builder: (c) => MonoWebView(
-                        apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
-                        config: {
-                          "selectedInstitution": {
-                            "id": "5f2d08bf60b92e2888287703",
-                            "auth_method": "internet_banking"
-                          }
-                        },
-                        onEvent: (event, data) {
-                          print('event: $event, data: $data');
-                        },
-                        onClosed: () {
-                          print('Modal closed');
-                        },
-                        onLoad: () {
-                          print('Mono loaded successfully');
-                        },
-                        onSuccess: (code) {
-                          print('Mono Success $code');
-                        },
-                      )))
-              .then((code) => print(code));
+              context,
+              'test_pk_qtys19MqGkmrkGk9RDjc',
+              authCode: 'code_sGjE1Zh48lFR8vr3FkrD',
+              reference: DateTime.now().millisecondsSinceEpoch.toString(),
+              config: jsonEncode({
+                "selectedInstitution": {
+                  "id": "5f2d08bf60b92e2888287703",
+                  "auth_method": "internet_banking"
+                }
+              }),
+              onEvent: (event, data) {
+                print('event: $event, data: $data');
+              },
+              onClosed: () {
+                print('Modal closed');
+              },
+              onLoad: () {
+                print('Mono loaded successfully');
+              },
+              onSuccess: (code) {
+                print('Mono Success $code');
+              },
+            );
+          // }
+          // Navigator.of(context)
+          //     .push(CupertinoPageRoute(
+          //         builder: (c) => MonoWebView(
+          //               apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
+          //               config: {
+          //                 "selectedInstitution": {
+          //                   "id": "5f2d08bf60b92e2888287703",
+          //                   "auth_method": "internet_banking"
+          //                 }
+          //               },
+          //               onEvent: (event, data) {
+          //                 print('event: $event, data: $data');
+          //               },
+          //               onClosed: () {
+          //                 print('Modal closed');
+          //               },
+          //               onLoad: () {
+          //                 print('Mono loaded successfully');
+          //               },
+          //               onSuccess: (code) {
+          //                 print('Mono Success $code');
+          //               },
+          //             )))
+          //     .then((code) => print(code));
         },
       )),
     );

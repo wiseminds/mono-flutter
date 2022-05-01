@@ -1,3 +1,7 @@
+## [1.0.0] -30-04-2022
+Added github actions to deploy to github pages
+Full Web support
+Added reauthorization support
 ## [1.0.0-dev.3] -18-02-2022
 Early web support, edited screenshot
 ## [1.0.0-dev.2] -18-02-2022

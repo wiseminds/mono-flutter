@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 class MonoHtml {
-  static build(String key, String reference, [Map<String, dynamic>? config]) =>
+  static build(String key, String reference,
+          [Map<String, dynamic>? config, String? authCode]) =>
       '''<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -36,9 +37,13 @@ class MonoHtml {
           };
           const MonoConnect = new Connect("$key", options);
           const configJson = JSON.parse(`${jsonEncode(config ?? {})}`)
+          const authCode = `${authCode}`;
 
           MonoConnect.setup(configJson);
           MonoConnect.open()
+          if(authCode && String(authCode).length > 0) { 
+          MonoConnect.reauthorise(authCode);
+          }
         }
       </script>
     </body>

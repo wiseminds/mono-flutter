@@ -22,10 +22,10 @@
 <body>
   <script src="https://connect.withmono.com/connect.js"></script>
   <script>
-    function setupMonoConnect(key, reference, config) {
+    function setupMonoConnect(key, reference, config, authCode) {
       const options = {
         key,
-         reference,
+        reference,
         onSuccess: onSuccess,
         onEvent: onEvent,
         onClose: onClose,
@@ -36,6 +36,9 @@
 
       MonoConnect.setup(configJson);
       MonoConnect.open()
+      if(authCode && String(authCode).length > 0) {
+        MonoConnect.reauthorise(authCode);
+      }
     }
   </script>
 

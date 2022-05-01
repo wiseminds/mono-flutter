@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 // In order to *not* need this ignore, consider extracting the "web" version
 // of your plugin as a separate package, instead of inlining it in the same
@@ -16,33 +17,43 @@ import 'package:mono_flutter/mono.dart';
 class MonoFlutterWeb {
   static void registerWith(Registrar registrar) {
     final MethodChannel channel = MethodChannel(
-      'mono_flutter',
+      'com.wiseminds.mono_flutter',
       const StandardMethodCodec(),
       registrar,
     );
 
     final pluginInstance = MonoFlutterWeb();
-    channel.setMethodCallHandler(pluginInstance.handleMethodCall);
+    channel.setMethodCallHandler(
+        (call) => pluginInstance.handleMethodCall(call, channel));
+    // channel.invokeMethod('onLoad', {});
   }
 
   /// Handles method calls over the MethodChannel of this plugin.
   /// Note: Check the "federated" architecture for a new way of doing this:
   /// https://flutter.dev/go/federated-plugins
-  Future<dynamic> handleMethodCall(MethodCall call) async {
+  Future<dynamic> handleMethodCall(
+      MethodCall call, MethodChannel channel) async {
+    // final MethodChannel channel = MethodChannel('com.wiseminds.mono_flutter', );
     switch (call.method) {
       case 'setup':
         final onLoad = () {
           print('MonoFlutterWeb: loaded');
+          channel.invokeMethod('onLoad', {});
         };
         final onClose = () {
           print('MonoFlutterWeb: onClose: ');
+          channel.invokeMethod('onClose', {});
         };
         final onEvent = (eventName, data) {
           print(
-              'MonoFlutterWeb: onEvent: $eventName, :${data.runtimeType} $data');
+              'MonoFlutterWeb: onEvent: $eventName,${eventName.runtimeType} :${data.runtimeType} $data, ${jsToMap(data)}');
+          channel.invokeMethod('onEvent',
+              {'eventName': eventName, 'data': jsonEncode(jsToMap(data))});
         };
         final onSuccess = (data) {
           print('MonoFlutterWeb: onSuccess:${data.runtimeType} $data');
+          channel
+              .invokeMethod('onSuccess', {'data': jsonEncode(jsToMap(data))});
         };
 
         setProperty(html.window, 'onLoad', allowInterop(onLoad));
@@ -50,8 +61,20 @@ class MonoFlutterWeb {
         setProperty(html.window, 'onEvent', allowInterop(onEvent));
         setProperty(html.window, 'onSuccess', allowInterop(onSuccess));
 
-        return setupMonoConnect(call.arguments['key'] as String,
-            call.arguments['reference'] as String?, call.arguments['config'] as String?);
+        setupMonoConnect(
+            call.arguments['key'] as String,
+            call.arguments['reference'] as String?,
+            call.arguments['config'] as String?,
+            call.arguments['authCode'] as String?);
+            // try {
+            //   var authCode =  call.arguments['authCode'] as String?;
+            //  if(authCode != null && authCode.isNotEmpty) {
+            //    reauthorise(authCode);
+            //  }
+            // } catch (e) {
+            //   print('MonoFlutterWeb: onLoad: $e');
+            // }
+        return;
       case 'open':
         return open();
       default:

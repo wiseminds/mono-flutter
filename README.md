@@ -18,6 +18,8 @@ A Flutter plugin integrating the official android and ios SDK for Mono (financia
   
 </p>
 
+## Preview
+you can checkout a web preview here https://wiseminds.github.io/mono-flutter
 
 ## Usage
 
@@ -43,7 +45,10 @@ for web support ass the following to index.html :
       const configJson = JSON.parse(config ?? `{}`);
 
       MonoConnect.setup(configJson);
-      MonoConnect.open()
+      // MonoConnect.open()
+       if(authCode && String(authCode).length > 0) {
+        MonoConnect.reauthorise(authCode);
+      }
     }
   </script>
 
@@ -95,3 +100,21 @@ class App extends StatelessWidget {
 ```
 
 checkout the example project for full implementation
+
+
+###Reauthorization
+Passing the [authCode] to the launch command
+This package will automatically call [connect.reauthorise(authCode)]
+```
+  connect.reauthorise(authCode);
+```
+
+Reauth code is a mono generated code for the account you want to re-authenticate,
+which must be requested by your server and sent to your frontend where you can
+pass it to mono connect widget.
+Mono connect widget will ask for the required information and re-authenticate the
+user's account and notify your server.
+Once the reauthorisation is complete, the mono.events.account_reauthorized event will
+be sent to your webhook, following with mono. events. account_updated once the synced
+data is available.
+
