@@ -54,7 +54,7 @@ for web support ass the following to index.html :
       const configJson = JSON.parse(config ?? `{}`);
 
       MonoConnect.setup(configJson);
-      
+
        if(authCode && String(authCode).length > 0) {
         MonoConnect.reauthorise(authCode);
       }
@@ -129,4 +129,31 @@ user's account and notify your server.
 Once the reauthorisation is complete, the mono.events.account_reauthorized event will
 be sent to your webhook, following with mono. events. account_updated once the synced
 data is available.
+
+### Customizations
+for a custom page or with a dialog, use the [MonoFlutterWebView] widget, but this is not supported on the web
+```dart
+ showDialog(context: context, builder: (c)=>  MonoWebView(
+                    apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
+                    config: {
+                      "selectedInstitution": {
+                        "id": "5f2d08bf60b92e2888287703",
+                        "auth_method": "internet_banking"
+                      }
+                    },
+                    reAuthCode: reAuthCode,
+                    onEvent: (event, data) {
+                      print('event: $event, data: $data');
+                    },
+                    onClosed: () {
+                      print('Modal closed');
+                    },
+                    onLoad: () {
+                      print('Mono loaded successfully');
+                    },
+                    onSuccess: (code) {
+                      print('Mono Success $code');
+                    },
+                  )));
+```
 
