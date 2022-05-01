@@ -40,10 +40,13 @@ class MonoHtml {
           const authCode = `${authCode}`;
 
           MonoConnect.setup(configJson);
-          MonoConnect.open()
-          if(authCode && String(authCode).length > 0) { 
+
+           if(authCode && String(authCode).length > 0) { 
           MonoConnect.reauthorise(authCode);
           }
+
+
+          MonoConnect.open()
         }
       </script>
     </body>

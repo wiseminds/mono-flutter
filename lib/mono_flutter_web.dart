@@ -37,21 +37,21 @@ class MonoFlutterWeb {
     switch (call.method) {
       case 'setup':
         final onLoad = () {
-          print('MonoFlutterWeb: loaded');
+          // print('MonoFlutterWeb: loaded');
           channel.invokeMethod('onLoad', {});
         };
         final onClose = () {
-          print('MonoFlutterWeb: onClose: ');
+          // print('MonoFlutterWeb: onClose: ');
           channel.invokeMethod('onClose', {});
         };
         final onEvent = (eventName, data) {
-          print(
-              'MonoFlutterWeb: onEvent: $eventName,${eventName.runtimeType} :${data.runtimeType} $data, ${jsToMap(data)}');
+          // print(
+          //     'MonoFlutterWeb: onEvent: $eventName,${eventName.runtimeType} :${data.runtimeType} $data, ${jsToMap(data)}');
           channel.invokeMethod('onEvent',
               {'eventName': eventName, 'data': jsonEncode(jsToMap(data))});
         };
         final onSuccess = (data) {
-          print('MonoFlutterWeb: onSuccess:${data.runtimeType} $data');
+          // print('MonoFlutterWeb: onSuccess:${data.runtimeType} $data');
           channel
               .invokeMethod('onSuccess', {'data': jsonEncode(jsToMap(data))});
         };

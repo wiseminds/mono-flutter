@@ -5,6 +5,14 @@
 
 A Flutter plugin integrating the official android and ios SDK for Mono (financial data Platform) (https://mono.co/)
 
+Mono Connect.js is a quick and secure way to link bank accounts to Mono from within your app. Mono Connect is a drop-in framework that handles connecting a financial institution to your app (credential validation, multi-factor authentication, error handling, etc). It works on mobile and web.
+
+For accessing customer accounts and interacting with Mono's API (Identity, Transactions, Income, DirectPay) use the server-side Mono API For complete information about Mono Connect, head to the docs. https://docs.mono.co/docs/ .
+
+###Getting Started
+Register on the [Mono](https://app.mono.co/dashboard) website and get your public and secret keys.
+Setup a server to [exchange tokens](https://docs.mono.co/reference/authentication-endpoint) to access user financial data with your Mono secret key.
+
 <p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot.jpeg" alt="Screenshot" height="300" />
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot2.jpeg" alt="Screenshot" height="300" />
@@ -17,6 +25,7 @@ A Flutter plugin integrating the official android and ios SDK for Mono (financia
   <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot2.png" alt="Web Screenshot" height="300" />
   
 </p>
+
 
 ## Preview
 you can checkout a web preview here https://wiseminds.github.io/mono-flutter
@@ -45,10 +54,13 @@ for web support ass the following to index.html :
       const configJson = JSON.parse(config ?? `{}`);
 
       MonoConnect.setup(configJson);
-      // MonoConnect.open()
+      
        if(authCode && String(authCode).length > 0) {
         MonoConnect.reauthorise(authCode);
       }
+
+      MonoConnect.open()
+      
     }
   </script>
 
@@ -70,30 +82,30 @@ class App extends StatelessWidget {
           child: RaisedButton(
         child: Text('launch mono'),
         onPressed: () {
-           if (kIsWeb){
-            return MonoFlutter().launch(
-                'API_KEY',
-                '',
-                jsonEncode({
-                  "selectedInstitution": {
-                    "id": "5f2d08bf60b92e2888287703",
-                    "auth_method": "internet_banking"
-                  }
-                }));}
-                Navigator.of(context)
-            .push(CupertinoPageRoute(
-                builder: (c) => MonoWebView(
-                      apiKey: 'API_KEY',
-                      onClosed: () {
-                        print('Modal closed');
-                      },
-                      onSuccess: (code) {
-                        print('Mono Success $code');
-                      },
-                    )))
-            .then((code) => print(code));
-            },
-      ));
+          MonoFlutter().launch(
+              context,
+              'YOUR_PUBLIC_KEY_HERE',
+              // authCode: 'code_sGjE1Zh48lFR8vr3FkrD',
+              reference: DateTime.now().millisecondsSinceEpoch.toString(),
+              config: jsonEncode({
+                "selectedInstitution": {
+                  "id": "5f2d08bf60b92e2888287703",
+                  "auth_method": "internet_banking"
+                }
+              }),
+              onEvent: (event, data) {
+                print('event: $event, data: $data');
+              },
+              onClosed: () {
+                print('Modal closed');
+              },
+              onLoad: () {
+                print('Mono loaded successfully');
+              },
+              onSuccess: (code) {
+                print('Mono Success $code');
+              },
+            );
     }
 }
 

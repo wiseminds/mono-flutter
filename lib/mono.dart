@@ -15,8 +15,6 @@ external void setup(Object obj);
 @JS('MonoConnect.open')
 external void open();
 
-@JS('MonoConnect.reauthorise')
-external void reauthorise(String code);
 
 @JS('setupMonoConnect')
 external void setupMonoConnect(String key, [String? reference, String? config, String? authCode]);

@@ -18,7 +18,7 @@ class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
   final String apiKey;
 
-  final String? reference, authCode;
+  final String? reference, reAuthCode;
 
   /// a function called when transaction succeeds
   final Function(String code)? onSuccess;
