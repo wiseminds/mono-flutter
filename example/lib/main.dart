@@ -71,14 +71,14 @@ class _MyHomePageState extends State<MyHomePage> {
           return MonoFlutter().launch(
             context,
             'test_pk_qtys19MqGkmrkGk9RDjc',
-            // reAuthCode: 'code_sGjE1Zh48lFR8vr3FkrD',
+            // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),
-            config: jsonEncode({
+            config: {
               "selectedInstitution": {
                 "id": "5f2d08bf60b92e2888287703",
                 "auth_method": "internet_banking"
               }
-            }),
+            },
             onEvent: (event, data) {
               print('event: $event, data: $data');
             },

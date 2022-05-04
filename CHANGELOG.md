@@ -1,3 +1,7 @@
+## [1.1.0] -04-05-2022
+- Fixed infinite loading on android and ios
+## [1.1.0] -04-05-2022
+- Fixed infinite loading on android and ios
 ## [1.0.1] -01-05-2022
 - removed unused imports
 ## [1.0.0] -01-05-2022

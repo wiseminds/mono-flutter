@@ -16,7 +16,7 @@ export 'mono_web_view.dart';
 class MonoFlutter {
   final MethodChannel channel = MethodChannel('com.wiseminds.mono_flutter');
 
-  /// Launch the mono-connect widget, 
+  /// Launch the mono-connect widget,
   /// [key] - YOUR_PUBLIC_KEY_HERE
   /// [onSuccess] -  This function is called when a user has successfully onboarded their account. It should take a single String argument containing the token that can be exchanged for an account id.
   /// [onClose] -The optional closure is called when a user has specifically exited the Mono Connect flow (i.e. the widget is not visible to the user). It does not take any arguments.
@@ -31,16 +31,16 @@ class MonoFlutter {
   ///}
   ///}```
   /// [reAuthCode] code is a mono generated code for the account you want to re-authenticate,
-    /// which must be requested by your server and sent to your frontend where you can
-    /// pass it to mono connect widget.
-    /// Mono connect widget will ask for the required information and re-authenticate the
-    /// user's account and notify your server.
-   ///  Once the reauthorisation is complete, the mono.events.account_reauthorized event will
-   ///  be sent to your webhook, following with mono. events. account_updated once the synced
-   ///  data is available.
+  /// which must be requested by your server and sent to your frontend where you can
+  /// pass it to mono connect widget.
+  /// Mono connect widget will ask for the required information and re-authenticate the
+  /// user's account and notify your server.
+  ///  Once the reauthorisation is complete, the mono.events.account_reauthorized event will
+  ///  be sent to your webhook, following with mono. events. account_updated once the synced
+  ///  data is available.
   launch(BuildContext context, String key,
       {String? reference,
-      String? config,
+      Map<String, dynamic>? config,
       String? reAuthCode,
       Function()? onLoad,
       Function()? onClosed,
@@ -50,7 +50,7 @@ class MonoFlutter {
       channel.invokeMethod('setup', {
         'key': key,
         'reference': reference ?? 15.getRandomString,
-        'config': config,
+        'config': jsonEncode(config),
         'authCode': reAuthCode
       });
 
@@ -84,32 +84,19 @@ class MonoFlutter {
           default:
         }
       });
+      // return
     } else {
-      Navigator.of(context)
-          .push(CupertinoPageRoute(
-              builder: (c) => MonoWebView(
-                    apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
-                    config: {
-                      "selectedInstitution": {
-                        "id": "5f2d08bf60b92e2888287703",
-                        "auth_method": "internet_banking"
-                      }
-                    },
-                    reAuthCode: reAuthCode,
-                    onEvent: (event, data) {
-                      print('event: $event, data: $data');
-                    },
-                    onClosed: () {
-                      print('Modal closed');
-                    },
-                    onLoad: () {
-                      print('Mono loaded successfully');
-                    },
-                    onSuccess: (code) {
-                      print('Mono Success $code');
-                    },
-                  )))
-          .then((code) => print(code));
+      Navigator.of(context).push(CupertinoPageRoute(
+          builder: (c) => MonoWebView(
+              apiKey: key,
+              config: config,
+              reAuthCode: reAuthCode ?? '',
+              onEvent: onEvent,
+              onClosed: onClosed,
+              onLoad: onLoad,
+              onSuccess: onSuccess,
+              reference: reference)));
+      // .then((code) => print(code));
     }
   }
 }

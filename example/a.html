@@ -1,9 +1,4 @@
-import 'dart:convert';
-
-class MonoHtml {
-  static build(String key, String reference,
-          [Map<String, dynamic>? config, String? authCode]) =>
-      '''<!DOCTYPE html>
+<!DOCTYPE html>
     <html lang="en">
     <head>
       <meta charset="UTF-8">
@@ -17,38 +12,43 @@ class MonoHtml {
         window.onload = setupMonoConnect;
         function setupMonoConnect() {
           const options = {
-             key: "$key",
-             reference: "$reference",
+              key: "test_pk_qtys19MqGkmrkGk9RDjc",
+             reference: "2476472hjh76",
             onSuccess:  (data) => {
               const response = {"type":"mono.modal.linked", response: {...data}}
-              MonoClientInterface.postMessage(JSON.stringify(response))
+              console.log(response)
+            //   MonoClientInterface.postMessage(JSON.stringify(response))
             },
              onEvent: (eventName, data) => {
              const response = { type: 'onEvent', eventName, data }
-              MonoClientInterface.postMessage(JSON.stringify(response))
+            //   MonoClientInterface.postMessage(JSON.stringify(response))
             },
             onClose: ()=> {
               const response = {type: 'mono.modal.closed', }
-              MonoClientInterface.postMessage(JSON.stringify(response))
+            //   MonoClientInterface.postMessage(JSON.stringify(response))
             },
               onLoad: ()=> {
               const response = {type: 'mono.modal.onLoad', }
-              MonoClientInterface.postMessage(JSON.stringify(response))
+            //   MonoClientInterface.postMessage(JSON.stringify(response))
             }
           };
           const MonoConnect = new Connect(options);
-          const configJson = JSON.parse(`${jsonEncode(config ?? {})}`)
-          const authCode = "$authCode";
+          const configJson = {
+              "selectedInstitution": {
+                "id": "5f2d08bf60b92e2888287703",
+                "auth_method": "internet_banking"
+              }
+            };
+          const authCode = "code_YZJTvYet0vefV39HS3H5";
 
-          MonoConnect.setup(configJson);
+          MonoConnect.setup({});
 
-          if(authCode && String(authCode).length > 2) { 
-            MonoConnect.reauthorise(authCode);
+          if(authCode && String(authCode).length > 0) { 
+          MonoConnect.reauthorise(authCode);
           }
 
           MonoConnect.open()
         }
       </script>
     </body>
-</html>''';
-}
+</html>
