@@ -1,6 +1,6 @@
 name: mono_flutter
 description: A Flutter plugin integrating the official android and ios SDK for Mono https://mono.co
-version: 1.1.1
+version: 1.1.2
 homepage: https://github.com/wiseminds/mono-flutter
 
 environment:

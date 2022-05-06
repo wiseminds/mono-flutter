@@ -45,7 +45,7 @@ class MonoFlutter {
       Function()? onLoad,
       Function()? onClosed,
       Function(MonoEvent, MonoEventData)? onEvent,
-      Function(dynamic)? onSuccess}) {
+      Function(String)? onSuccess}) {
     if (kIsWeb) {
       channel.invokeMethod('setup', {
         'key': key,
@@ -63,7 +63,12 @@ class MonoFlutter {
             if (onClosed != null) onClosed();
             return true;
           case 'onSuccess':
-            if (onSuccess != null) onSuccess(call.arguments['data']);
+            print(call.arguments);
+            final args = (jsonDecode(call.arguments.toString()) as Map<Object?, Object?>)
+                .map<String, Object?>((key, value) => MapEntry('$key', value));
+            // final data = args['data'] as Map<String, Object?>?;
+            if (onSuccess != null && args != null)
+              onSuccess(args['code'].toString());
             return true;
           case 'onEvent':
             if (onEvent != null) {

@@ -52,8 +52,7 @@ class MonoFlutterWeb {
         };
         final onSuccess = (data) {
           // print('MonoFlutterWeb: onSuccess:${data.runtimeType} $data');
-          channel
-              .invokeMethod('onSuccess', {'data': jsonEncode(jsToMap(data))});
+          channel.invokeMethod('onSuccess', jsonEncode(jsToMap(data)));
         };
 
         setProperty(html.window, 'onLoad', allowInterop(onLoad));
@@ -66,14 +65,14 @@ class MonoFlutterWeb {
             call.arguments['reference'] as String?,
             call.arguments['config'] as String?,
             call.arguments['authCode'] as String?);
-            // try {
-            //   var authCode =  call.arguments['authCode'] as String?;
-            //  if(authCode != null && authCode.isNotEmpty) {
-            //    reauthorise(authCode);
-            //  }
-            // } catch (e) {
-            //   print('MonoFlutterWeb: onLoad: $e');
-            // }
+        // try {
+        //   var authCode =  call.arguments['authCode'] as String?;
+        //  if(authCode != null && authCode.isNotEmpty) {
+        //    reauthorise(authCode);
+        //  }
+        // } catch (e) {
+        //   print('MonoFlutterWeb: onLoad: $e');
+        // }
         return;
       case 'open':
         return open();
