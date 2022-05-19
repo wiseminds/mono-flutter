@@ -36,24 +36,24 @@ class MonoFlutterWeb {
     // final MethodChannel channel = MethodChannel('com.wiseminds.mono_flutter', );
     switch (call.method) {
       case 'setup':
-        final onLoad = () {
+        onLoad() {
           // print('MonoFlutterWeb: loaded');
           channel.invokeMethod('onLoad', {});
-        };
-        final onClose = () {
+        }
+        onClose() {
           // print('MonoFlutterWeb: onClose: ');
           channel.invokeMethod('onClose', {});
-        };
-        final onEvent = (eventName, data) {
+        }
+        onEvent(eventName, data) {
           // print(
           //     'MonoFlutterWeb: onEvent: $eventName,${eventName.runtimeType} :${data.runtimeType} $data, ${jsToMap(data)}');
           channel.invokeMethod('onEvent',
               {'eventName': eventName, 'data': jsonEncode(jsToMap(data))});
-        };
-        final onSuccess = (data) {
+        }
+        onSuccess(data) {
           // print('MonoFlutterWeb: onSuccess:${data.runtimeType} $data');
           channel.invokeMethod('onSuccess', jsonEncode(jsToMap(data)));
-        };
+        }
 
         setProperty(html.window, 'onLoad', allowInterop(onLoad));
         setProperty(html.window, 'onClose', allowInterop(onClose));

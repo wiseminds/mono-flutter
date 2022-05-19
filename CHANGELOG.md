@@ -1,3 +1,5 @@
+## [1.1.3] -19-05-2022
+- Updated dependencies
 ## [1.1.2] -06-05-2022
 - Unified onSuccess parameter to a String
 ## [1.1.1] -04-05-2022

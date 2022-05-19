@@ -50,10 +50,10 @@ class MonoWebView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _MonoWebViewState createState() => _MonoWebViewState();
+  MonoWebViewState createState() => MonoWebViewState();
 }
 
-class _MonoWebViewState extends State<MonoWebView> {
+class MonoWebViewState extends State<MonoWebView> {
   late WebViewController _webViewController;
   // final url = 'https://connect.withmono.com/?key=';
   bool isLoading = false;
@@ -84,7 +84,7 @@ class _MonoWebViewState extends State<MonoWebView> {
       child: Material(
         child: GestureDetector(
             onTap: () {
-              WidgetsBinding.instance?.focusManager.primaryFocus?.unfocus();
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
             },
             child: SafeArea(
               child: Stack(children: [
@@ -102,25 +102,26 @@ class _MonoWebViewState extends State<MonoWebView> {
                       _webViewController = webViewController;
                     },
                     onPageStarted: (String url) {
-                      // hasFoward = await _webViewController?.canGoForward();
+                      // hasForward = await _webViewController?.canGoForward();
                       setState(() {
                         isLoading = true;
                         hasError = false;
                       });
                     },
-                    javascriptChannels: <JavascriptChannel>[
+                    javascriptChannels: <JavascriptChannel>{
                       _monoJavascriptChannel(context),
-                    ].toSet(),
-                    gestureRecognizers: Set()
-                      ..add(Factory<TapGestureRecognizer>(
-                          () => TapGestureRecognizer()
-                            ..onTapDown = (tap) {
-                              SystemChannels.textInput.invokeMethod(
-                                  'TextInput.hide'); //This will hide keyboard ontapdown
-                            })),
+                    },
+                    gestureRecognizers:
+                        <Factory<OneSequenceGestureRecognizer>>{}..add(
+                            Factory<TapGestureRecognizer>(
+                                () => TapGestureRecognizer()
+                                  ..onTapDown = (tap) {
+                                    SystemChannels.textInput.invokeMethod(
+                                        'TextInput.hide'); //This will hide keyboard on tapdown
+                                  })),
                     debuggingEnabled: kDebugMode,
                     onWebResourceError: (err) async {
-                      print(err);
+                      // print(err);
                       isLoading = false;
                       setState(() {
                         hasError = true;
@@ -129,15 +130,11 @@ class _MonoWebViewState extends State<MonoWebView> {
                     onPageFinished: (String url) async {
                       isLoading = false;
                       setState(() {});
-                      // _webViewController.evaluateJavascript(
-                      //     'MonoClientInterface.postMessage("reyfhgjgf");123;');
                     },
                   ),
                 ),
                 if (isLoading)
-                  Center(
-                    child: CupertinoActivityIndicator(),
-                  ),
+                  const Center(child: CupertinoActivityIndicator()),
                 if (hasError) widget.error ?? _error
               ]),
             )),
@@ -155,18 +152,15 @@ class _MonoWebViewState extends State<MonoWebView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-                child: Text('Reload'),
+                child: const Text('Reload'),
                 onPressed: () {
                   _webViewController.reload();
                 }),
           ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Text(
-              'Sorry An error occured could not connect with Mono',
-              textAlign: TextAlign.center,
-            ),
-          ),
+          const Padding(
+              padding: EdgeInsets.all(20.0),
+              child: Text('Sorry An error occurred could not connect with Mono',
+                  textAlign: TextAlign.center)),
         ],
       ));
 
@@ -178,8 +172,9 @@ class _MonoWebViewState extends State<MonoWebView> {
         onMessageReceived: (JavascriptMessage message) {
           if (kDebugMode) print('MonoClientInterface, ${message.message}');
           var res = json.decode(message.message);
-          if (kDebugMode)
+          if (kDebugMode) {
             print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
+          }
           handleResponse(res as Map<String, dynamic>);
         });
   }
@@ -208,11 +203,10 @@ class _MonoWebViewState extends State<MonoWebView> {
           break;
 
         default:
-          print('onEvent');
-
           final event = MonoEvent.unknown.fromString(key.split('.').last);
-          if (widget.onEvent != null)
+          if (widget.onEvent != null) {
             widget.onEvent!(event, MonoEventData.fromJson(body.getKey('data')));
+          }
           break;
       }
     }
