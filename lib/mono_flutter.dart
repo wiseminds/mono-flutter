@@ -14,7 +14,8 @@ import 'mono_web_view.dart';
 export 'mono_web_view.dart';
 
 class MonoFlutter {
-  final MethodChannel channel = const MethodChannel('com.wiseminds.mono_flutter');
+  final MethodChannel channel =
+      const MethodChannel('com.wiseminds.mono_flutter');
 
   /// Launch the mono-connect widget,
   /// [key] - YOUR_PUBLIC_KEY_HERE
@@ -64,10 +65,11 @@ class MonoFlutter {
             return true;
           case 'onSuccess':
             // print(call.arguments);
-            final args = (jsonDecode(call.arguments.toString()) as Map<Object?, Object?>)
+            final args = (jsonDecode(call.arguments.toString())
+                    as Map<Object?, Object?>)
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
             // final data = args['data'] as Map<String, Object?>?;
-            if (onSuccess != null ) {
+            if (onSuccess != null) {
               onSuccess(args['code'].toString());
             }
             return true;

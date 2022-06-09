@@ -15,12 +15,12 @@ external void setup(Object obj);
 @JS('MonoConnect.open')
 external void open();
 
-
 @JS('setupMonoConnect')
-external void setupMonoConnect(String key, [String? reference, String? config, String? authCode]);
+external void setupMonoConnect(String key,
+    [String? reference, String? config, String? authCode]);
 
 dynamic _nested(dynamic val) {
-  if (val.runtimeType.toString()  == 'LegacyJavaScriptObject') {
+  if (val.runtimeType.toString() == 'LegacyJavaScriptObject') {
     return jsToMap(val);
   }
   return val;
