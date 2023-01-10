@@ -96,17 +96,18 @@ class MonoFlutter {
       });
       // return
     } else {
-      Navigator.of(context).push(CupertinoPageRoute(
-          builder: (c) => MonoWebView(
-              apiKey: key,
-              config: config,
-              reAuthCode: reAuthCode ?? '',
-              onEvent: onEvent,
-              onClosed: onClosed,
-              onLoad: onLoad,
-              onSuccess: onSuccess,
-              reference: reference)));
-      // .then((code) => print(code));
+      Navigator.of(context)
+          .push(CupertinoPageRoute(
+              builder: (c) => MonoWebView(
+                  apiKey: key,
+                  config: config,
+                  reAuthCode: reAuthCode ?? '',
+                  onEvent: onEvent,
+                  onClosed: onClosed,
+                  onLoad: onLoad,
+                  onSuccess: onSuccess,
+                  reference: reference)))
+          .then((code) => print(code));
     }
   }
 
@@ -136,7 +137,7 @@ class MonoFlutter {
             if (onClosed != null) onClosed();
             return true;
           case 'onSuccess':
-            // print(call.arguments);
+            print(call.arguments);
             final args = (jsonDecode(call.arguments.toString())
                     as Map<Object?, Object?>)
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
@@ -166,22 +167,23 @@ class MonoFlutter {
       });
       // return
     } else {
-      Navigator.of(context).push(
-        CupertinoPageRoute(
-          builder: (c) => MonoPaymentWebView(
-            apiKey: key,
-            config: config,
-            paymentId: paymentId,
-            reAuthCode: reAuthCode ?? '',
-            onEvent: onEvent,
-            onClosed: onClosed,
-            onLoad: onLoad,
-            onSuccess: onSuccess,
-            reference: reference,
-          ),
-        ),
-      );
-      // .then((code) => print(code));
+      Navigator.of(context)
+          .push(
+            CupertinoPageRoute(
+              builder: (c) => MonoPaymentWebView(
+                apiKey: key,
+                config: config,
+                paymentId: paymentId,
+                reAuthCode: reAuthCode ?? '',
+                onEvent: onEvent,
+                onClosed: onClosed,
+                onLoad: onLoad,
+                onSuccess: onSuccess,
+                reference: reference,
+              ),
+            ),
+          )
+          .then((code) => print(code));
     }
   }
 }
