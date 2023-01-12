@@ -72,7 +72,7 @@ class MonoFlutter {
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
             // final data = args['data'] as Map<String, Object?>?;
             if (onSuccess != null) {
-              onSuccess(args['code'].toString());
+              onSuccess(args['reference'].toString());
             }
             return true;
           case 'onEvent':
