@@ -65,7 +65,7 @@ class MonoWebViewState extends State<MonoWebView> {
 
   @override
   void initState() {
-    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
+    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.buildPaymentView(
         widget.apiKey,
         widget.reference ?? 15.getRandomString,
         widget.config,
