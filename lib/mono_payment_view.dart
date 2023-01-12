@@ -69,12 +69,12 @@ class MonoPaymentWebViewState extends State<MonoPaymentWebView> {
   @override
   void initState() {
     contentBase64 =
-        base64Encode(const Utf8Encoder().convert(MonoHtml.buildPaymentView(
+        base64Encode(const Utf8Encoder().convert(MonoHtml.build(
       widget.apiKey,
-      widget.paymentId,
+      widget.paymentId!,
       widget.config,
       widget.reference ?? 15.getRandomString,
-      widget.reAuthCode,
+      // widget.reAuthCode,
     )));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
