@@ -196,7 +196,7 @@ class MonoPaymentWebViewState extends State<MonoPaymentWebView> {
           var response = body['response'];
           if (response == null) return;
           var code = response['code'];
-          print('code: $code');
+          print('code: $response');
           if (widget.onSuccess != null) widget.onSuccess!(code);
           if (mounted) Navigator.of(context).pop(code);
           break;
