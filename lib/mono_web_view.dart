@@ -65,7 +65,7 @@ class MonoWebViewState extends State<MonoWebView> {
 
   @override
   void initState() {
-    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.buildPaymentView(
+    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
         widget.apiKey,
         widget.reference ?? 15.getRandomString,
         widget.config,
@@ -190,7 +190,6 @@ class MonoWebViewState extends State<MonoWebView> {
           var response = body['response'];
           if (response == null) return;
           var code = response['code'];
-          if (kDebugMode) print('MonoRef, $code');
           if (widget.onSuccess != null) widget.onSuccess!(code);
           if (mounted) Navigator.of(context).pop(code);
           break;
