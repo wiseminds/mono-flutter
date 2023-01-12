@@ -72,8 +72,8 @@ class MonoFlutter {
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
             // final data = args['data'] as Map<String, Object?>?;
             if (onSuccess != null) {
-              print(args['data']!.toString());
-              onSuccess(args['data']!.toString());
+              print('PRINTING MONO CODE: ${args['code']}');
+              onSuccess(args['code'].toString());
             }
             return true;
           case 'onEvent':
