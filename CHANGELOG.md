@@ -1,3 +1,5 @@
+## [2.0.0] -25-01-2022
+- Updated dependencies, updated sdk constrants to >=2.19.0
 ## [1.1.3] -19-05-2022
 - Updated dependencies
 ## [1.1.2] -06-05-2022

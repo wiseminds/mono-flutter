@@ -58,12 +58,17 @@ class MonoWebViewState extends State<MonoWebView> {
   ValueNotifier<bool> isLoading = ValueNotifier(false);
   ValueNotifier<bool> hasError = ValueNotifier(false);
 
-  late String contentBase64;
+  // late String contentBase64;
 
   // await controller.loadUrl('data:text/html;base64,$contentBase64');
 
   @override
   void initState() {
+    // contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
+    //     widget.apiKey,
+    //     widget.reference ?? 15.getRandomString,
+    //     widget.config,
+    //     widget.reAuthCode)));
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..addJavaScriptChannel('MonoClientInterface',
@@ -92,13 +97,12 @@ class MonoWebViewState extends State<MonoWebView> {
           return NavigationDecision.navigate;
         },
       ))
-      ..loadHtmlString('data:text/html;base64,$contentBase64');
-
-    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
-        widget.apiKey,
-        widget.reference ?? 15.getRandomString,
-        widget.config,
-        widget.reAuthCode)));
+      ..loadHtmlString(MonoHtml.build(
+          widget.apiKey,
+          widget.reference ?? 15.getRandomString,
+          widget.config,
+          widget.reAuthCode));
+    // ..loadRequest(Uri.parse(('data:text/html;base64,$contentBase64')));
 
     super.initState();
   }
