@@ -113,7 +113,7 @@ class MonoWebViewState extends State<MonoWebView> {
       child: Material(
         child: GestureDetector(
             onTap: () {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+              WidgetsBinding.instance?.focusManager.primaryFocus?.unfocus();
             },
             child: SafeArea(
               child: Stack(children: [
