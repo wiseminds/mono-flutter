@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -65,12 +64,42 @@ class MonoWebViewState extends State<MonoWebView> {
 
   @override
   void initState() {
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..addJavaScriptChannel('MonoClientInterface',
+          onMessageReceived: _monoJavascriptChannel)
+      ..setNavigationDelegate(NavigationDelegate(
+        onProgress: (int progress) {
+          // Update loading bar.
+        },
+        onPageStarted: (String url) {
+          setState(() {
+            isLoading = true;
+            hasError = false;
+          });
+        },
+        onPageFinished: (String url) {
+          isLoading = false;
+          setState(() {});
+        },
+        onWebResourceError: (WebResourceError error) {
+          isLoading = false;
+          setState(() {
+            hasError = true;
+          });
+        },
+        onNavigationRequest: (NavigationRequest request) {
+          return NavigationDecision.navigate;
+        },
+      ))
+      ..loadHtmlString('data:text/html;base64,$contentBase64');
+
     contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
         widget.apiKey,
         widget.reference ?? 15.getRandomString,
         widget.config,
         widget.reAuthCode)));
-    if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
+
     super.initState();
   }
 
@@ -92,25 +121,8 @@ class MonoWebViewState extends State<MonoWebView> {
                   // margin: EdgeInsets.only(top: 30),
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
-                  child: WebView(
-                    initialUrl:
-                        'data:text/html;base64,$contentBase64', // ??url + widget.apiKey,
-                    javascriptMode: JavascriptMode.unrestricted,
-                    onWebViewCreated: (WebViewController webViewController) {
-                      // if (!_controller.isCompleted)
-                      //   _controller.complete(webViewController);
-                      _webViewController = webViewController;
-                    },
-                    onPageStarted: (String url) {
-                      // hasForward = await _webViewController?.canGoForward();
-                      setState(() {
-                        isLoading = true;
-                        hasError = false;
-                      });
-                    },
-                    javascriptChannels: <JavascriptChannel>{
-                      _monoJavascriptChannel(context),
-                    },
+                  child: WebViewWidget(
+                    controller: _webViewController,
                     gestureRecognizers:
                         <Factory<OneSequenceGestureRecognizer>>{}..add(
                             Factory<TapGestureRecognizer>(
@@ -119,18 +131,6 @@ class MonoWebViewState extends State<MonoWebView> {
                                     SystemChannels.textInput.invokeMethod(
                                         'TextInput.hide'); //This will hide keyboard on tapdown
                                   })),
-                    debuggingEnabled: kDebugMode,
-                    onWebResourceError: (err) async {
-                      // print(err);
-                      isLoading = false;
-                      setState(() {
-                        hasError = true;
-                      });
-                    },
-                    onPageFinished: (String url) async {
-                      isLoading = false;
-                      setState(() {});
-                    },
                   ),
                 ),
                 if (isLoading)
@@ -165,18 +165,13 @@ class MonoWebViewState extends State<MonoWebView> {
       ));
 
   /// javascript channel for events sent by mono
-  JavascriptChannel _monoJavascriptChannel(BuildContext context) {
-    return JavascriptChannel(
-        // name: 'top',
-        name: 'MonoClientInterface',
-        onMessageReceived: (JavascriptMessage message) {
-          if (kDebugMode) print('MonoClientInterface, ${message.message}');
-          var res = json.decode(message.message);
-          if (kDebugMode) {
-            print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
-          }
-          handleResponse(res as Map<String, dynamic>);
-        });
+  void _monoJavascriptChannel(JavaScriptMessage message) {
+    if (kDebugMode) print('MonoClientInterface, ${message.message}');
+    var res = json.decode(message.message);
+    if (kDebugMode) {
+      print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
+    }
+    handleResponse(res as Map<String, dynamic>);
   }
 
   /// parse event from javascript channel
@@ -184,7 +179,6 @@ class MonoWebViewState extends State<MonoWebView> {
     String? key = body!['type'];
     if (key != null) {
       switch (key) {
-
         // case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
