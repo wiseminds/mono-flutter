@@ -32,6 +32,8 @@ class MonoWebView extends StatefulWidget {
   /// An overlay widget to display over webview if page fails to load
   final Widget? error;
 
+  final String? paymentUrl;
+
   final Function(MonoEvent event, MonoEventData data)? onEvent;
 
   final Map<String, dynamic>? config;
@@ -44,6 +46,7 @@ class MonoWebView extends StatefulWidget {
       this.onSuccess,
       this.onClosed,
       this.onLoad,
+      this.paymentUrl,
       this.reference,
       this.config,
       this.reAuthCode = ''})
@@ -65,11 +68,13 @@ class MonoWebViewState extends State<MonoWebView> {
 
   @override
   void initState() {
-    contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
-        widget.apiKey,
-        widget.reference ?? 15.getRandomString,
-        widget.config,
-        widget.reAuthCode)));
+    contentBase64 = base64Encode(const Utf8Encoder().convert(
+        MonoHtml.buildPaymentView(
+            widget.apiKey,
+            widget.paymentUrl,
+            widget.reference ?? 15.getRandomString,
+            widget.config,
+            widget.reAuthCode)));
     if (Platform.isAndroid) WebView.platform = SurfaceAndroidWebView();
     super.initState();
   }
@@ -184,7 +189,6 @@ class MonoWebViewState extends State<MonoWebView> {
     String? key = body!['type'];
     if (key != null) {
       switch (key) {
-
         // case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
