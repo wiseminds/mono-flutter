@@ -54,7 +54,6 @@ class MonoHtml {
 
   static buildPaymentView(
     String? key,
-    String? paymentUrl,
     String? paymentId, [
     Map<String, dynamic>? config,
     String reference = '',
@@ -94,7 +93,7 @@ class MonoHtml {
               }
             };
             const MonoConnect = new Connect(options);
-            const url = "$paymentUrl";
+            const url = "https://connect.withmono.com/?key=${key}&scope=payments&data=&reference=${reference}";
             MonoConnect.setup(url);
             MonoConnect.open();
           }

@@ -34,10 +34,6 @@ class MonoPaymentWebView extends StatefulWidget {
   /// An overlay widget to display over webview if page fails to load
   final Widget? error;
 
-
-  // This Url is used to initiate direct payment
-  final String? paymentUrl;
-
   final Function(MonoEvent event, MonoEventData data)? onEvent;
 
   final Map<String, dynamic>? config;
@@ -47,7 +43,6 @@ class MonoPaymentWebView extends StatefulWidget {
       required this.apiKey,
       this.error,
       this.onEvent,
-      this.paymentUrl,
       this.onSuccess,
       this.onClosed,
       this.onLoad,
@@ -76,7 +71,6 @@ class MonoPaymentWebViewState extends State<MonoPaymentWebView> {
     contentBase64 =
         base64Encode(const Utf8Encoder().convert(MonoHtml.buildPaymentView(
       widget.apiKey,
-      widget.paymentUrl,
       widget.paymentId,
       widget.config,
       widget.reference ?? 15.getRandomString,
