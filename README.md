@@ -7,7 +7,7 @@ A Flutter plugin integrating the official android and ios SDK for Mono (financia
 
 Mono Connect.js is a quick and secure way to link bank accounts to Mono from within your app. Mono Connect is a drop-in framework that handles connecting a financial institution to your app (credential validation, multi-factor authentication, error handling, etc). It works on mobile and web.
 
-For accessing customer accounts and interacting with Mono's API (Identity, Transactions, Income, DirectPay) use the server-side Mono API For complete information about Mono Connect, head to the docs. https://docs.mono.co/docs/ .
+For accessing customer accounts and interacting with Mono's API (Identity, Transactions, Income, DirectPay) use the server-side Mono API. For complete information about Mono Connect, head to the docs. https://docs.mono.co/docs/ .
 
 ### Getting Started
 Register on the [Mono](https://app.mono.co/dashboard) website and get your public and secret keys.
@@ -20,10 +20,10 @@ Setup a server to [exchange tokens](https://docs.mono.co/reference/authenticatio
 
 <p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot1.png" alt="Web Screenshot" height="300" />
-  
+
 </p><p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot2.png" alt="Web Screenshot" height="300" />
-  
+
 </p>
 
 
@@ -35,9 +35,9 @@ you can checkout a web preview here https://wiseminds.github.io/mono-flutter
 Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlutter` class.
 
 
-for web support ass the following to index.html :
+For web support add the following to index.html :
 
- ``` HTML 
+ ``` HTML
 
  <script src="https://connect.withmono.com/connect.js"></script>
   <script>
@@ -111,7 +111,7 @@ class App extends StatelessWidget {
 
 ```
 
-checkout the example project for full implementation
+Checkout the example project for full implementation
 
 
 ###Reauthorization
@@ -127,33 +127,36 @@ pass it to mono connect widget.
 Mono connect widget will ask for the required information and re-authenticate the
 user's account and notify your server.
 Once the reauthorisation is complete, the mono.events.account_reauthorized event will
-be sent to your webhook, following with mono. events. account_updated once the synced
+be sent to your webhook, following with mono.events.account_updated once the synced
 data is available.
 
 ### Customizations
-for a custom page or with a dialog, use the [MonoFlutterWebView] widget, but this is not supported on the web
+For a custom page or with a dialog, use the [MonoFlutterWebView] widget, but this is not supported on the web.
 ```dart
- showDialog(context: context, builder: (c)=>  MonoWebView(
-                    apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
-                    config: {
-                      "selectedInstitution": {
-                        "id": "5f2d08bf60b92e2888287703",
-                        "auth_method": "internet_banking"
-                      }
-                    },
-                    reAuthCode: reAuthCode,
-                    onEvent: (event, data) {
-                      print('event: $event, data: $data');
-                    },
-                    onClosed: () {
-                      print('Modal closed');
-                    },
-                    onLoad: () {
-                      print('Mono loaded successfully');
-                    },
-                    onSuccess: (code) {
-                      print('Mono Success $code');
-                    },
-                  )));
+ showDialog(
+      context: context,
+      builder: (c) => MonoWebView(
+        apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
+        config: const {
+          "selectedInstitution": {
+            "id": "5f2d08bf60b92e2888287703",
+            "auth_method": "internet_banking"
+          }
+        },
+        reAuthCode: reAuthCode,
+        onEvent: (event, data) {
+          print('event: $event, data: $data');
+        },
+        onClosed: () {
+          print('Modal closed');
+        },
+        onLoad: () {
+          print('Mono loaded successfully');
+        },
+        onSuccess: (code) {
+          print('Mono Success $code');
+        },
+      ),
+    );
 ```
 
