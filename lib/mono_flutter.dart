@@ -64,7 +64,6 @@ class MonoFlutter {
             if (onClosed != null) onClosed();
             return true;
           case 'onSuccess':
-            // print(call.arguments);
             final args = (jsonDecode(call.arguments.toString())
                     as Map<Object?, Object?>)
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
@@ -75,8 +74,6 @@ class MonoFlutter {
             return true;
           case 'onEvent':
             if (onEvent != null) {
-              // print(call.arguments);
-              // print(call.arguments.runtimeType);
               final args = (call.arguments as Map<Object?, Object?>)
                   .map<String, Object?>(
                       (key, value) => MapEntry('$key', value));
