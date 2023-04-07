@@ -64,23 +64,19 @@ class MonoFlutter {
             if (onClosed != null) onClosed();
             return true;
           case 'onSuccess':
-            // print(call.arguments);
             final args = (jsonDecode(call.arguments.toString())
                     as Map<Object?, Object?>)
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
-            // final data = args['data'] as Map<String, Object?>?;
+
             if (onSuccess != null) {
               onSuccess(args['code'].toString());
             }
             return true;
           case 'onEvent':
             if (onEvent != null) {
-              // print(call.arguments);
-              // print(call.arguments.runtimeType);
               final args = (call.arguments as Map<Object?, Object?>)
                   .map<String, Object?>(
                       (key, value) => MapEntry('$key', value));
-              // onEvent(call.arguments['eventName'], call.arguments['data']);
               final event =
                   MonoEvent.unknown.fromString(args['eventName'].toString());
 

@@ -122,7 +122,6 @@ class MonoWebViewState extends State<MonoWebView> {
             child: SafeArea(
               child: Stack(children: [
                 Container(
-                  // margin: EdgeInsets.only(top: 30),
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
                   child: WebViewWidget(
