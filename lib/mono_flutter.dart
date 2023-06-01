@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:mono_flutter/extensions/num.dart';
+import 'package:mono_flutter/mono_payment_view.dart';
 
 import 'models/mono_event.dart';
 import 'models/mono_event_data.dart';
@@ -19,6 +20,7 @@ class MonoFlutter {
 
   /// Launch the mono-connect widget,
   /// [key] - YOUR_PUBLIC_KEY_HERE
+  /// [paymentId] - Use this to initiate direct payment
   /// [onSuccess] -  This function is called when a user has successfully onboarded their account. It should take a single String argument containing the token that can be exchanged for an account id.
   /// [onClose] -The optional closure is called when a user has specifically exited the Mono Connect flow (i.e. the widget is not visible to the user). It does not take any arguments.
   /// [onLoad] - This function is invoked the widget has been mounted unto the DOM. You can handle toggling your trigger button within this callback.
@@ -69,6 +71,7 @@ class MonoFlutter {
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
 
             if (onSuccess != null) {
+              print('PRINTING MONO CODE: ${args['code']}');
               onSuccess(args['code'].toString());
             }
             return true;
@@ -90,17 +93,94 @@ class MonoFlutter {
       });
       // return
     } else {
-      Navigator.of(context).push(CupertinoPageRoute(
-          builder: (c) => MonoWebView(
-              apiKey: key,
-              config: config,
-              reAuthCode: reAuthCode ?? '',
-              onEvent: onEvent,
-              onClosed: onClosed,
-              onLoad: onLoad,
-              onSuccess: onSuccess,
-              reference: reference)));
-      // .then((code) => print(code));
+      Navigator.of(context)
+          .push(CupertinoPageRoute(
+              builder: (c) => MonoWebView(
+                  apiKey: key,
+                  config: config,
+                  reAuthCode: reAuthCode ?? '',
+                  onEvent: onEvent,
+                  onClosed: onClosed,
+                  onLoad: onLoad,
+                  onSuccess: onSuccess,
+                  reference: reference)))
+          .then((code) => print(code));
+    }
+  }
+
+  pay(BuildContext context, String key,
+      {String? reference,
+      String? paymentId,
+      Map<String, dynamic>? config,
+      String? reAuthCode,
+      Function()? onLoad,
+      Function()? onClosed,
+      Function(MonoEvent, MonoEventData)? onEvent,
+      Function(String)? onSuccess}) {
+    if (kIsWeb) {
+      channel.invokeMethod('setup', {
+        'key': key,
+        'reference': reference ?? 15.getRandomString,
+        'config': jsonEncode(config),
+        'authCode': reAuthCode
+      });
+
+      channel.setMethodCallHandler((call) async {
+        switch (call.method) {
+          case 'onLoad':
+            if (onLoad != null) onLoad();
+            return true;
+          case 'onClose':
+            if (onClosed != null) onClosed();
+            return true;
+          case 'onSuccess':
+            print(call.arguments);
+            final args = (jsonDecode(call.arguments.toString())
+                    as Map<Object?, Object?>)
+                .map<String, Object?>((key, value) => MapEntry('$key', value));
+            // final data = args['data'] as Map<String, Object?>?;
+            if (onSuccess != null) {
+              onSuccess(args['code'].toString());
+            }
+            return true;
+          case 'onEvent':
+            if (onEvent != null) {
+              // print(call.arguments);
+              // print(call.arguments.runtimeType);
+              final args = (call.arguments as Map<Object?, Object?>)
+                  .map<String, Object?>(
+                      (key, value) => MapEntry('$key', value));
+              // onEvent(call.arguments['eventName'], call.arguments['data']);
+              final event =
+                  MonoEvent.unknown.fromString(args['eventName'].toString());
+
+              onEvent(event,
+                  MonoEventData.fromJson(jsonDecode(args['data'].toString())));
+            }
+            return true;
+
+          default:
+        }
+      });
+      // return
+    } else {
+      Navigator.of(context)
+          .push(
+            CupertinoPageRoute(
+              builder: (c) => MonoPaymentWebView(
+                apiKey: key,
+                config: config,
+                paymentId: paymentId,
+                reAuthCode: reAuthCode ?? '',
+                onEvent: onEvent,
+                onClosed: onClosed,
+                onLoad: onLoad,
+                onSuccess: onSuccess,
+                reference: reference,
+              ),
+            ),
+          )
+          .then((code) => print(code));
     }
   }
 }
