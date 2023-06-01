@@ -22,7 +22,7 @@
 <body>
   <script src="https://connect.withmono.com/connect.js"></script>
   <script>
-    function setupMonoConnect(key, reference, config, authCode) {
+    function setupMonoConnect(key, reference, config, authCode, paymentMode) {
       const options = {
         key,
         reference,
@@ -31,6 +31,10 @@
         onClose: onClose,
         onLoad: onLoad
       };
+      if(paymentMode) {
+            options.scope = "payment";
+        }
+      
       const MonoConnect = new Connect(options);
       const configJson = JSON.parse(config ?? `{}`);
 
@@ -51,7 +55,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js?v=360445797');
+        navigator.serviceWorker.register('flutter_service_worker.js?v=3144731557');
       });
     }
   </script>
