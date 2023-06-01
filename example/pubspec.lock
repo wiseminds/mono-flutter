@@ -7,8 +7,8 @@ packages:
       name: async
       sha256: bfe67ef28df125b7dddcea62755991f807aa39a2492a23e1550161692950bbe0
       url: "https://pub.dev"
-    source: hosted
-    version: "2.10.0"
+    source: hosted 
+    version: "2.10.0" 
   boolean_selector:
     dependency: transitive
     description:
@@ -102,16 +102,16 @@ packages:
       name: matcher
       sha256: "16db949ceee371e9b99d22f88fa3a73c4e59fd0afed0bd25fc336eb76c198b72"
       url: "https://pub.dev"
-    source: hosted
-    version: "0.12.13"
+    source: hosted 
+    version: "0.12.13" 
   material_color_utilities:
     dependency: transitive
     description:
       name: material_color_utilities
       sha256: d92141dc6fe1dad30722f9aa826c7fbc896d021d792f80678280601aff8cf724
       url: "https://pub.dev"
-    source: hosted
-    version: "0.2.0"
+    source: hosted 
+    version: "0.2.0" 
   meta:
     dependency: transitive
     description:
@@ -154,8 +154,8 @@ packages:
       name: source_span
       sha256: dd904f795d4b4f3b870833847c461801f6750a9fa8e61ea5ac53f9422b31f250
       url: "https://pub.dev"
-    source: hosted
-    version: "1.9.1"
+    source: hosted 
+    version: "1.9.1" 
   stack_trace:
     dependency: transitive
     description:
@@ -178,8 +178,8 @@ packages:
       name: string_scanner
       sha256: "556692adab6cfa87322a115640c11f13cb77b3f076ddcc5d6ae3c20242bedcde"
       url: "https://pub.dev"
-    source: hosted
-    version: "1.2.0"
+    source: hosted 
+    version: "1.2.0" 
   term_glyph:
     dependency: transitive
     description:
@@ -194,8 +194,8 @@ packages:
       name: test_api
       sha256: ad540f65f92caa91bf21dfc8ffb8c589d6e4dc0c2267818b4cc2792857706206
       url: "https://pub.dev"
-    source: hosted
-    version: "0.4.16"
+    source: hosted 
+    version: "0.4.16" 
   vector_math:
     dependency: transitive
     description:
@@ -237,5 +237,5 @@ packages:
     source: hosted
     version: "3.0.2"
 sdks:
-  dart: ">=2.19.0 <4.0.0"
+  dart: ">=2.19.0 <3.0.0"
   flutter: ">=3.0.0"

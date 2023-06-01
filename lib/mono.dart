@@ -29,8 +29,6 @@ dynamic _nested(dynamic val) {
 /// A workaround to converting an object from JS to a Dart Map.
 Map jsToMap(jsObject) {
   return Map.fromIterable(_getKeysOfObject(jsObject), value: (key) {
-    // print(
-    //     '${(jsObject is djs.JsObject)}, $key, ${jsObject.runtimeType} ${_nested(jsObject)}');
     return _nested(js.getProperty(jsObject, key));
   });
 }
