@@ -5,8 +5,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:mono_flutter/extensions/num.dart';
-import 'package:mono_flutter/mono_payment_view.dart';
+import 'package:mono_flutter/extensions/num.dart'; 
 
 import 'models/mono_event.dart';
 import 'models/mono_event_data.dart';
@@ -41,8 +40,9 @@ class MonoFlutter {
   ///  Once the reauthorisation is complete, the mono.events.account_reauthorized event will
   ///  be sent to your webhook, following with mono. events. account_updated once the synced
   ///  data is available.
+  /// [paymentMode] set to true if you want to initiate a direct payment
   launch(BuildContext context, String key,
-      {String? reference,
+      {String? reference, bool paymentMode = false,
       Map<String, dynamic>? config,
       String? reAuthCode,
       Function()? onLoad,
@@ -54,7 +54,8 @@ class MonoFlutter {
         'key': key,
         'reference': reference ?? 15.getRandomString,
         'config': jsonEncode(config),
-        'authCode': reAuthCode
+        'authCode': reAuthCode, 
+        'paymentMode': paymentMode
       });
 
       channel.setMethodCallHandler((call) async {
@@ -102,85 +103,11 @@ class MonoFlutter {
                   onEvent: onEvent,
                   onClosed: onClosed,
                   onLoad: onLoad,
+                  paymentMode: paymentMode,
                   onSuccess: onSuccess,
                   reference: reference)))
           .then((code) => print(code));
     }
   }
-
-  pay(BuildContext context, String key,
-      {String? reference,
-      String? paymentId,
-      Map<String, dynamic>? config,
-      String? reAuthCode,
-      Function()? onLoad,
-      Function()? onClosed,
-      Function(MonoEvent, MonoEventData)? onEvent,
-      Function(String)? onSuccess}) {
-    if (kIsWeb) {
-      channel.invokeMethod('setup', {
-        'key': key,
-        'reference': reference ?? 15.getRandomString,
-        'config': jsonEncode(config),
-        'authCode': reAuthCode
-      });
-
-      channel.setMethodCallHandler((call) async {
-        switch (call.method) {
-          case 'onLoad':
-            if (onLoad != null) onLoad();
-            return true;
-          case 'onClose':
-            if (onClosed != null) onClosed();
-            return true;
-          case 'onSuccess':
-            print(call.arguments);
-            final args = (jsonDecode(call.arguments.toString())
-                    as Map<Object?, Object?>)
-                .map<String, Object?>((key, value) => MapEntry('$key', value));
-            // final data = args['data'] as Map<String, Object?>?;
-            if (onSuccess != null) {
-              onSuccess(args['code'].toString());
-            }
-            return true;
-          case 'onEvent':
-            if (onEvent != null) {
-              // print(call.arguments);
-              // print(call.arguments.runtimeType);
-              final args = (call.arguments as Map<Object?, Object?>)
-                  .map<String, Object?>(
-                      (key, value) => MapEntry('$key', value));
-              // onEvent(call.arguments['eventName'], call.arguments['data']);
-              final event =
-                  MonoEvent.unknown.fromString(args['eventName'].toString());
-
-              onEvent(event,
-                  MonoEventData.fromJson(jsonDecode(args['data'].toString())));
-            }
-            return true;
-
-          default:
-        }
-      });
-      // return
-    } else {
-      Navigator.of(context)
-          .push(
-            CupertinoPageRoute(
-              builder: (c) => MonoPaymentWebView(
-                apiKey: key,
-                config: config,
-                paymentId: paymentId,
-                reAuthCode: reAuthCode ?? '',
-                onEvent: onEvent,
-                onClosed: onClosed,
-                onLoad: onLoad,
-                onSuccess: onSuccess,
-                reference: reference,
-              ),
-            ),
-          )
-          .then((code) => print(code));
-    }
-  }
+ 
 }

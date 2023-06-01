@@ -17,7 +17,7 @@ external void open();
 
 @JS('setupMonoConnect')
 external void setupMonoConnect(String key,
-    [String? reference, String? config, String? authCode]);
+    [String? reference, String? config, String? authCode, bool? paymentMode]);
 
 dynamic _nested(dynamic val) {
   if (val.runtimeType.toString() == 'LegacyJavaScriptObject') {
