@@ -72,6 +72,7 @@ class MonoFlutter {
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
 
             if (onSuccess != null) {
+              // ignore: avoid_print
               print('PRINTING MONO CODE: ${args['code']}');
               onSuccess(args['code'].toString());
             }
@@ -106,6 +107,7 @@ class MonoFlutter {
                   paymentMode: paymentMode,
                   onSuccess: onSuccess,
                   reference: reference)))
+          // ignore: avoid_print
           .then((code) => print(code));
     }
   }

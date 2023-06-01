@@ -34,7 +34,7 @@
       if(paymentMode) {
             options.scope = "payment";
         }
-        console.log(options);
+      
       const MonoConnect = new Connect(options);
       const configJson = JSON.parse(config ?? `{}`);
 

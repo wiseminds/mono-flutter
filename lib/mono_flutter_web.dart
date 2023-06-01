@@ -41,6 +41,7 @@ class MonoFlutterWeb {
           channel.invokeMethod('onClose', {});
         }
         onEvent(eventName, data) {
+          // print('$eventName, ${jsonEncode(jsToMap(data))}');
           channel.invokeMethod('onEvent',
               {'eventName': eventName, 'data': jsonEncode(jsToMap(data))});
         }
