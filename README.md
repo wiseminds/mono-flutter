@@ -38,29 +38,31 @@ Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlut
 For web support add the following to index.html :
 
  ``` HTML
-
  <script src="https://connect.withmono.com/connect.js"></script>
   <script>
-    function setupMonoConnect(key, reference, config) {
+    function setupMonoConnect(key, reference, config, authCode, paymentMode) {
       const options = {
         key,
-         reference,
+        reference,
         onSuccess: onSuccess,
         onEvent: onEvent,
         onClose: onClose,
         onLoad: onLoad
       };
+      if(paymentMode) {
+            options.scope = "payment";
+        }
       const MonoConnect = new Connect(options);
       const configJson = JSON.parse(config ?? `{}`);
 
       MonoConnect.setup(configJson);
-
-       if(authCode && String(authCode).length > 0) {
+      
+      if(authCode && String(authCode).length > 0) {
         MonoConnect.reauthorise(authCode);
       }
 
       MonoConnect.open()
-      
+     
     }
   </script>
 
@@ -159,4 +161,6 @@ For a custom page or with a dialog, use the [MonoFlutterWebView] widget, but thi
       ),
     );
 ```
+
+
 

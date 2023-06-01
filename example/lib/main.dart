@@ -70,8 +70,9 @@ class MyHomePageState extends State<MyHomePage> {
         onPressed: () {
           // if (kIsWeb) {
           MonoFlutter().launch(
-            context,
+            context, 
             'test_pk_qtys19MqGkmrkGk9RDjc',
+            paymentMode: true,
             // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),
             config: {

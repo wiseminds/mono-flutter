@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
-
 // In order to *not* need this ignore, consider extracting the "web" version
 // of your plugin as a separate package, instead of inlining it in the same
 // package as the core of your plugin.
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html show window;
-import 'dart:js';
 import 'dart:js_util';
 
 import 'package:flutter/services.dart';
@@ -43,6 +41,7 @@ class MonoFlutterWeb {
           channel.invokeMethod('onClose', {});
         }
         onEvent(eventName, data) {
+          // print('$eventName, ${jsonEncode(jsToMap(data))}');
           channel.invokeMethod('onEvent',
               {'eventName': eventName, 'data': jsonEncode(jsToMap(data))});
         }
@@ -59,7 +58,8 @@ class MonoFlutterWeb {
             call.arguments['key'] as String,
             call.arguments['reference'] as String?,
             call.arguments['config'] as String?,
-            call.arguments['authCode'] as String?);
+            call.arguments['authCode'] as String?,
+            call.arguments['paymentMode'] as bool? ?? false);
         return;
       case 'open':
         return open();

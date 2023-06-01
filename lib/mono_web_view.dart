@@ -33,6 +33,9 @@ class MonoWebView extends StatefulWidget {
 
   final String? paymentUrl;
 
+  /// set to true if you want to initiate a direct payment
+  final bool paymentMode;
+
   final Function(MonoEvent event, MonoEventData data)? onEvent;
 
   final Map<String, dynamic>? config;
@@ -48,7 +51,7 @@ class MonoWebView extends StatefulWidget {
       this.paymentUrl,
       this.reference,
       this.config,
-      this.reAuthCode = ''})
+      this.reAuthCode = '', required this.paymentMode})
       : super(key: key);
 
   @override
@@ -66,7 +69,7 @@ class MonoWebViewState extends State<MonoWebView> {
   // await controller.loadUrl('data:text/html;base64,$contentBase64');
 
   @override
-  void initState() { 
+  void initState() {
     // contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
     //     widget.apiKey,
     //     widget.reference ?? 15.getRandomString,
@@ -106,7 +109,7 @@ class MonoWebViewState extends State<MonoWebView> {
           widget.config,
           widget.reAuthCode));
     // ..loadRequest(Uri.parse(('data:text/html;base64,$contentBase64')));
- 
+
     super.initState();
   }
 

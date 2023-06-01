@@ -22,7 +22,7 @@
 <body>
   <script src="https://connect.withmono.com/connect.js"></script>
   <script>
-    function setupMonoConnect(key, reference, config, authCode) {
+    function setupMonoConnect(key, reference, config, authCode, paymentMode) {
       const options = {
         key,
         reference,
@@ -31,6 +31,10 @@
         onClose: onClose,
         onLoad: onLoad
       };
+      if(paymentMode) {
+            options.scope = "payment";
+        }
+      
       const MonoConnect = new Connect(options);
       const configJson = JSON.parse(config ?? `{}`);
 
