@@ -107,6 +107,7 @@ class MonoWebViewState extends State<MonoWebView> {
           return NavigationDecision.navigate;
         },
       ))
+      ..setBackgroundColor(Colors.white)
       ..loadHtmlString(MonoHtml.build(
           widget.apiKey,
           widget.reference ?? 15.getRandomString,
