@@ -64,7 +64,6 @@ class MonoWebViewState extends State<MonoWebView> {
   late WebViewController _webViewController;
   // final url = 'https://connect.withmono.com/?key=';
   ValueNotifier<bool> isLoading = ValueNotifier(false);
-  ValueNotifier<bool> hasError = ValueNotifier(false);
 
   // late String contentBase64;
 
@@ -86,14 +85,10 @@ class MonoWebViewState extends State<MonoWebView> {
           // Update loading bar.
         },
         onPageStarted: (String url) {
-          setState(() {
-            isLoading.value = true;
-            hasError.value = false;
-          });
+          isLoading.value = true;
         },
         onPageFinished: (String url) {
           isLoading.value = false;
-          setState(() {});
         },
         onWebResourceError: (WebResourceError error) {
           Sentry.captureException(error, hint: error.description);
@@ -116,6 +111,14 @@ class MonoWebViewState extends State<MonoWebView> {
     // ..loadRequest(Uri.parse(('data:text/html;base64,$contentBase64')));
 
     super.initState();
+  }
+
+  Widget _buildLoader() {
+    return ConstrainedBox(
+      constraints:
+          const BoxConstraints(maxHeight: 2.0, minWidth: double.infinity),
+      child: const LinearProgressIndicator(),
+    );
   }
 
   @override
@@ -147,23 +150,7 @@ class MonoWebViewState extends State<MonoWebView> {
                                   })),
                   ),
                 ),
-                ValueListenableBuilder<bool>(
-                    valueListenable: isLoading,
-                    builder: (context, value, child) {
-                      if (value) {
-                        return const Center(
-                            child: CupertinoActivityIndicator());
-                      }
-                      return const SizedBox();
-                    }),
-                ValueListenableBuilder<bool>(
-                    valueListenable: hasError,
-                    builder: (context, value, child) {
-                      if (value) {
-                        return widget.error ?? _error;
-                      }
-                      return const SizedBox();
-                    })
+                _buildLoader()
               ]),
             )),
       ),
