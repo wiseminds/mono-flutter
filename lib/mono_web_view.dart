@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mono_flutter/extensions/map.dart';
 import 'package:mono_flutter/extensions/num.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'models/mono_event.dart';
@@ -51,7 +52,8 @@ class MonoWebView extends StatefulWidget {
       this.paymentUrl,
       this.reference,
       this.config,
-      this.reAuthCode = '', required this.paymentMode})
+      this.reAuthCode = '',
+      required this.paymentMode})
       : super(key: key);
 
   @override
@@ -94,10 +96,12 @@ class MonoWebViewState extends State<MonoWebView> {
           setState(() {});
         },
         onWebResourceError: (WebResourceError error) {
-          isLoading.value = false;
-          setState(() {
+          Sentry.captureException(error, hint: error.description);
+          /* isLoading.value = false;
+
+         setState(() {
             hasError.value = true;
-          });
+          });*/
         },
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
