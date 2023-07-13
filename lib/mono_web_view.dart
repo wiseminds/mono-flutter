@@ -112,14 +112,6 @@ class MonoWebViewState extends State<MonoWebView> {
     super.initState();
   }
 
-  Widget _buildLoader() {
-    return ConstrainedBox(
-      constraints:
-          const BoxConstraints(maxHeight: 2.0, minWidth: double.infinity),
-      child: const LinearProgressIndicator(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -129,11 +121,12 @@ class MonoWebViewState extends State<MonoWebView> {
       },
       child: Material(
         child: GestureDetector(
-            onTap: () {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-            },
-            child: SafeArea(
-              child: Stack(children: [
+          onTap: () {
+            WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+          },
+          child: SafeArea(
+            child: Stack(
+              children: [
                 Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.transparent)),
@@ -149,9 +142,23 @@ class MonoWebViewState extends State<MonoWebView> {
                                   })),
                   ),
                 ),
-                _buildLoader()
-              ]),
-            )),
+                ValueListenableBuilder(
+                  valueListenable: isLoading,
+                  builder: (context, value, child) => AnimatedSwitcher(
+                    duration: kThemeAnimationDuration,
+                    child: value
+                        ? ConstrainedBox(
+                            constraints: const BoxConstraints(
+                                maxHeight: 2.0, minWidth: double.infinity),
+                            child: const LinearProgressIndicator(),
+                          )
+                        : const SizedBox.shrink(),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
