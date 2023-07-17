@@ -190,19 +190,19 @@ class MonoWebViewState extends State<MonoWebView> {
     if (kDebugMode) print('MonoClientInterface, ${message.message}');
     var res = json.decode(message.message);
     if (kDebugMode) {
-      print('MonoClientInterface, ${(res as Map<String, dynamic>)}');
+      print('MonoClientInterface, ${(res as Map<String, dynamic>?)}');
     }
-    handleResponse(res as Map<String, dynamic>);
+    handleResponse(res as Map<String, dynamic>?);
   }
 
   /// parse event from javascript channel
   void handleResponse(Map<String, dynamic>? body) {
-    String? key = body!['type'];
+    String? key = body?['type'];
     if (key != null) {
       switch (key) {
         // case 'mono.connect.widget.account_linked':
         case 'mono.modal.linked':
-          var response = body['response'];
+          var response = body!['response'];
           if (response == null) return;
           var code = response['code'];
           if (widget.onSuccess != null) widget.onSuccess!(code);
@@ -220,7 +220,8 @@ class MonoWebViewState extends State<MonoWebView> {
         default:
           final event = MonoEvent.unknown.fromString(key.split('.').last);
           if (widget.onEvent != null) {
-            widget.onEvent!(event, MonoEventData.fromJson(body.getKey('data')));
+            widget.onEvent!(
+                event, MonoEventData.fromJson(body!.getKey('data')));
           }
           break;
       }
