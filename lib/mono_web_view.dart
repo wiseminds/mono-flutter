@@ -219,9 +219,8 @@ class MonoWebViewState extends State<MonoWebView> {
 
         default:
           final event = MonoEvent.unknown.fromString(key.split('.').last);
-          if (widget.onEvent != null) {
-            widget.onEvent!(
-                event, MonoEventData.fromJson(body!.getKey('data')));
+          if (widget.onEvent != null && body!.containsKey("data")) {
+            widget.onEvent!(event, MonoEventData.fromJson(body.getKey('data')));
           }
           break;
       }
