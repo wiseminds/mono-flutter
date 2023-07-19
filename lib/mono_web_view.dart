@@ -210,8 +210,11 @@ class MonoWebViewState extends State<MonoWebView> {
           break;
         // case 'mono.connect.widget.closed':
         case 'mono.modal.closed':
-          if (widget.onClosed != null) widget.onClosed!();
-          if (mounted) Navigator.of(context).pop();
+          if (widget.onClosed != null) {
+            widget.onClosed!();
+          } else if (mounted) {
+            Navigator.of(context).pop();
+          }
           break;
         case 'mono.modal.onLoad':
           if (mounted && widget.onLoad != null) widget.onLoad!();
