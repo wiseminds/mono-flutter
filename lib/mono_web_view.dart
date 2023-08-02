@@ -116,7 +116,10 @@ class MonoWebViewState extends State<MonoWebView> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if (widget.onClosed != null) widget.onClosed!();
+        if (widget.onClosed != null) {
+          Navigator.pop(context);
+          widget.onClosed!();
+        }
         return true;
       },
       child: Material(
