@@ -162,5 +162,3 @@ For a custom page or with a dialog, use the [MonoFlutterWebView] widget, but thi
     );
 ```
 
-
-
