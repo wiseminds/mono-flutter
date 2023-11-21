@@ -90,7 +90,8 @@ class MonoWebViewState extends State<MonoWebView> {
           isLoading.value = false;
         },
         onWebResourceError: (WebResourceError error) {
-          Sentry.captureException(error, hint: error.description);
+          Sentry.captureException(error,
+              hint: Hint()..set('WebResourceError', error.description));
           /* isLoading.value = false;
 
          setState(() {
