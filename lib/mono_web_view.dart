@@ -23,7 +23,7 @@ class MonoWebView extends StatefulWidget {
   final Function(String code)? onSuccess;
 
   /// a function called when user clicks the close button on mono's page
-  final Function()? onClosed;
+  final Function(String code)? onClosed;
 
   /// a function called when the mono widget loads
   final Function()? onLoad;
@@ -115,11 +115,12 @@ class MonoWebViewState extends State<MonoWebView> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        if (widget.onClosed != null) widget.onClosed!();
-        return true;
-      },
+    return PopScope(
+      canPop: true,
+      // onWillPop: () async {
+      //   if (widget.onClosed != null) widget.onClosed!();
+      //   return true;
+      // },
       child: Material(
         child: GestureDetector(
             onTap: () {
@@ -212,8 +213,11 @@ class MonoWebViewState extends State<MonoWebView> {
           break;
         // case 'mono.connect.widget.closed':
         case 'mono.modal.closed':
-          if (widget.onClosed != null) widget.onClosed!();
-          if (mounted) Navigator.of(context).pop();
+         var response = body['response'];
+          if (response == null) return;
+          var code = response['code'];
+          if (widget.onClosed != null) widget.onClosed!(code);
+          if (mounted) Navigator.of(context).pop(code);
           break;
         case 'mono.modal.onLoad':
           if (mounted && widget.onLoad != null) widget.onLoad!();

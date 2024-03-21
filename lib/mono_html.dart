@@ -30,8 +30,8 @@ class MonoHtml {
              const response = { type: 'onEvent', eventName, data }
               MonoClientInterface.postMessage(JSON.stringify(response))
             },
-            onClose: ()=> {
-              const response = {type: 'mono.modal.closed', }
+            onClose: (data) => {
+              const response = {type: 'mono.modal.closed', response: {...data}}
               MonoClientInterface.postMessage(JSON.stringify(response))
             },
               onLoad: ()=> {

@@ -84,8 +84,8 @@ class MyHomePageState extends State<MyHomePage> {
             onEvent: (event, data) {
               if (kDebugMode) print('event: $event, data: $data');
             },
-            onClosed: () {
-              if (kDebugMode) print('Modal closed');
+            onClosed: (code) {
+              if (kDebugMode) print('Modal closed $code');
             },
             onLoad: () {
               if (kDebugMode) print('Mono loaded successfully');
