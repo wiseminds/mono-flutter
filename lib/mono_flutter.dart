@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:mono_flutter/extensions/num.dart'; 
+import 'package:mono_flutter/extensions/num.dart';
 
 import 'models/mono_event.dart';
 import 'models/mono_event_data.dart';
@@ -42,7 +42,8 @@ class MonoFlutter {
   ///  data is available.
   /// [paymentMode] set to true if you want to initiate a direct payment
   launch(BuildContext context, String key,
-      {String? reference, bool paymentMode = false,
+      {String? reference,
+      bool paymentMode = false,
       Map<String, dynamic>? config,
       String? reAuthCode,
       Function()? onLoad,
@@ -54,7 +55,7 @@ class MonoFlutter {
         'key': key,
         'reference': reference ?? 15.getRandomString,
         'config': jsonEncode(config),
-        'authCode': reAuthCode, 
+        'authCode': reAuthCode,
         'paymentMode': paymentMode
       });
 
@@ -118,5 +119,4 @@ class MonoFlutter {
           .then((code) => print(code));
     }
   }
- 
 }

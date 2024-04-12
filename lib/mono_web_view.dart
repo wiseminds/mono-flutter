@@ -41,7 +41,7 @@ class MonoWebView extends StatefulWidget {
   final Map<String, dynamic>? config;
 
   const MonoWebView(
-      {Key? key,
+      {super.key,
       required this.apiKey,
       this.error,
       this.onEvent,
@@ -51,8 +51,8 @@ class MonoWebView extends StatefulWidget {
       this.paymentUrl,
       this.reference,
       this.config,
-      this.reAuthCode = '', required this.paymentMode})
-      : super(key: key);
+      this.reAuthCode = '',
+      required this.paymentMode});
 
   @override
   MonoWebViewState createState() => MonoWebViewState();
@@ -121,6 +121,10 @@ class MonoWebViewState extends State<MonoWebView> {
       //   if (widget.onClosed != null) widget.onClosed!();
       //   return true;
       // },
+//       onPopInvoked: (v) {
+//         if (widget.onClosed != null) widget.onClosed!();
+//       },
+ 
       child: Material(
         child: GestureDetector(
             onTap: () {
