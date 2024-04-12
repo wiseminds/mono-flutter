@@ -122,8 +122,8 @@ class App extends StatelessWidget {
               onEvent: (event, data) {
                 print('event: $event, data: $data');
               },
-              onClosed: () {
-                print('Modal closed');
+              onClosed: (code) {
+                print('Modal closed, $code');
               },
               onLoad: () {
                 print('Mono loaded successfully');
