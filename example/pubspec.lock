@@ -135,15 +135,16 @@ packages:
       sha256: "0e0a020085b65b6083975e499759762399b4475f766c21668c4ecca34ea74e5a"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.0"
+    version: "0.8.0" 
   meta:
     dependency: transitive
     description:
-      name: meta
+      name: meta 
+
       sha256: d584fa6707a52763a52446f02cc621b077888fb63b93bbcb1143a7be5a0c0c04
       url: "https://pub.dev"
     source: hosted
-    version: "1.11.0"
+    version: "1.11.0" 
   mono_flutter:
     dependency: "direct main"
     description:
@@ -227,7 +228,15 @@ packages:
       sha256: "80b3257d1492ce4d091729e3a67a60407d227c27241d6927be0130c98e741803"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.4" 
+  web:
+    dependency: transitive
+    description:
+      name: web
+      sha256: afe077240a270dcfd2aafe77602b4113645af95d0ad31128cc02bce5ac5d5152
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0" 
   vm_service:
     dependency: transitive
     description:
@@ -235,7 +244,7 @@ packages:
       sha256: b3d56ff4341b8f182b96aceb2fa20e3dcb336b9f867bc0eafc0de10f1048e957
       url: "https://pub.dev"
     source: hosted
-    version: "13.0.0"
+    version: "13.0.0" 
   webview_flutter:
     dependency: transitive
     description:
@@ -268,6 +277,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-sdks:
-  dart: ">=3.2.0-0 <4.0.0"
+sdks: 
+  dart: ">=3.2.0-194.0.dev <4.0.0" 
   flutter: ">=3.3.0"

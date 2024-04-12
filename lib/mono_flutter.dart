@@ -47,7 +47,7 @@ class MonoFlutter {
       Map<String, dynamic>? config,
       String? reAuthCode,
       Function()? onLoad,
-      Function()? onClosed,
+      Function(String)? onClosed,
       Function(MonoEvent, MonoEventData)? onEvent,
       Function(String)? onSuccess}) {
     if (kIsWeb) {
@@ -65,7 +65,14 @@ class MonoFlutter {
             if (onLoad != null) onLoad();
             return true;
           case 'onClose':
-            if (onClosed != null) onClosed();
+          final args = (jsonDecode(call.arguments.toString())
+                    as Map<Object?, Object?>)
+                .map<String, Object?>((key, value) => MapEntry('$key', value));
+            if (onClosed != null) {
+                // ignore: avoid_print
+              print('PRINTING MONO CODE: ${args['code']}');
+              onClosed(args['code'].toString());
+            }
             return true;
           case 'onSuccess':
             final args = (jsonDecode(call.arguments.toString())
