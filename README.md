@@ -13,6 +13,17 @@ For accessing customer accounts and interacting with Mono's API (Identity, Trans
 Register on the [Mono](https://app.mono.co/dashboard) website and get your public and secret keys.
 Setup a server to [exchange tokens](https://docs.mono.co/reference/authentication-endpoint) to access user financial data with your Mono secret key.
 
+
+### How to upgrade to the Mono Widget 2.0
+If you already use Mono Connect or DirectPay, you will need to upgrade your widget to version 2 to get access to these new features. To upgrade to v2, take the following steps:
+
+[Log in](https://app.mono.co/dashboard) to your Mono dashboard
+
+Visit [Preferences](https://app.mono.co/settings/business/preferences) in the Settings section, toggle on the new version of the Mono widget, and confirm the switch.
+
+If you would like to use the new widget and Mono's open banking APIs to build innovative solutions for your customers, you can get [started by creating a Mono account here](https://app.mono.co).
+ 
+ ##### screenshots
 <p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot.png" alt="Screenshot" height="300" />
   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot2.png" alt="Screenshot" height="300" />
@@ -27,7 +38,18 @@ Setup a server to [exchange tokens](https://docs.mono.co/reference/authenticatio
   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot2.png" alt="Web Screenshot" height="300" />
 
 </p>
+/p><p align="center">
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot3.png" alt="Web Screenshot" height="300" />
 
+</p>
+/p><p align="center">
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot4.png" alt="Web Screenshot" height="300" />
+
+</p>
+/p><p align="center">
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot5.png" alt="Web Screenshot" height="300" />
+
+</p>
 
 ## Preview
 you can checkout a web preview here https://wiseminds.github.io/mono-flutter
