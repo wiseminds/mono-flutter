@@ -25,29 +25,29 @@ If you would like to use the new widget and Mono's open banking APIs to build in
  
  ##### screenshots
 <p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot.png" alt="Screenshot" height="300" />
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot2.png" alt="Screenshot" height="300" />
-   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot3.png" alt="Screenshot" height="300" />
-    <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot4.png" alt="Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/screenshot.png" alt="Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/screenshot2.png" alt="Screenshot" height="300" />
+   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/screenshot3.png" alt="Screenshot" height="300" />
+    <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/screenshot4.png" alt="Screenshot" height="300" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot1.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot1.png" alt="Web Screenshot" height="300" />
 
 </p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot2.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot2.png" alt="Web Screenshot" height="300" />
 
 </p>
 /p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot3.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot3.png" alt="Web Screenshot" height="300" />
 
 </p>
 /p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot4.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot4.png" alt="Web Screenshot" height="300" />
 
 </p>
 /p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot5.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot5.png" alt="Web Screenshot" height="300" />
 
 </p>
 
