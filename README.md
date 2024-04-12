@@ -14,15 +14,17 @@ Register on the [Mono](https://app.mono.co/dashboard) website and get your publi
 Setup a server to [exchange tokens](https://docs.mono.co/reference/authentication-endpoint) to access user financial data with your Mono secret key.
 
 <p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot.jpeg" alt="Screenshot" height="300" />
-  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot2.jpeg" alt="Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot.png" alt="Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot2.png" alt="Screenshot" height="300" />
+   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot3.png" alt="Screenshot" height="300" />
+    <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot24.png" alt="Screenshot" height="300" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot1.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot1.png" alt="Web Screenshot" height="300" />
 
 </p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/web/web-screenshot2.png" alt="Web Screenshot" height="300" />
+  <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/web-screenshot2.png" alt="Web Screenshot" height="300" />
 
 </p>
 
