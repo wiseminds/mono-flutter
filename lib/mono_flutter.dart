@@ -68,10 +68,10 @@ class MonoFlutter {
             final args = (jsonDecode(call.arguments.toString())
                     as Map<Object?, Object?>)
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
-            if (onClosed != null) {
-              if (kDebugMode) print('PRINTING MONO CODE: ${{...args}['code']}');
-              onClosed({...args}['code'].toString());
-            }
+
+            if (kDebugMode) print('PRINTING MONO CODE: ${{...args}['code']}');
+            onClosed?.call({...args}['code'].toString());
+
             return true;
           case 'onSuccess':
             final args = (jsonDecode(call.arguments.toString())
