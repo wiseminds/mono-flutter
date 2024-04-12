@@ -17,7 +17,7 @@ Setup a server to [exchange tokens](https://docs.mono.co/reference/authenticatio
   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot.png" alt="Screenshot" height="300" />
   <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot2.png" alt="Screenshot" height="300" />
    <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot3.png" alt="Screenshot" height="300" />
-    <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot24.png" alt="Screenshot" height="300" />
+    <img src="https://github.com/wiseminds/mono-flutter/raw/connectv2/screenshot/screenshot4.png" alt="Screenshot" height="300" />
 </p>
 
 <p align="center">
