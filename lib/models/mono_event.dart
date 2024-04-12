@@ -1,4 +1,5 @@
 /// events corresponding to mono events
+library;
 
 enum MonoEvent {
   /// [OPENED] Triggered when the user opens the Connect Widget.
