@@ -17,28 +17,31 @@
 
   <title>example</title>
   <link rel="manifest" href="manifest.json">
+ 
 </head>
 
 <body>
-  <script src="https://connect.withmono.com/connect.js"></script>
+  <script src="https://connect.withwithmono.comm/connect.js"></script>
   <script>
-    function setupMonoConnect(key, reference, config, authCode, paymentMode) {
+    
+    function setupMonoConnect(key, reference, data, authCode, scope) {
+      console.log(typeof data,  JSON.parse(`${data}`))
+      const config = JSON.parse(`${data}`);
+      console.log(Connect)
       const options = {
         key,
         reference,
+        scope,
         onSuccess: onSuccess,
         onEvent: onEvent,
         onClose: onClose,
         onLoad: onLoad
       };
-      if(paymentMode) {
-            options.scope = "payment";
-        }
+       
       
       const MonoConnect = new Connect(options);
-      const configJson = JSON.parse(config ?? `{}`);
 
-      MonoConnect.setup(configJson);
+      MonoConnect.setup(config);
       
       if(authCode && String(authCode).length > 0) {
         MonoConnect.reauthorise(authCode);
@@ -55,7 +58,7 @@
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js?v=342182490');
+        navigator.serviceWorker.register('flutter_service_worker.js?v=146774278');
       });
     }
   </script>
