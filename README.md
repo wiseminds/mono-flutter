@@ -1,29 +1,30 @@
 # mono_flutter
 
-
 [![pub package](https://img.shields.io/badge/Pub-1.0.0-green.svg)](https://pub.dartlang.org/packages/mono_flutter)
 
-A Flutter plugin integrating the official android and ios SDK for Mono (financial data Platform) (https://mono.co/)
+A Flutter plugin integrating the official android and ios SDK for Mono (financial data Platform) (https://withmono.com/)
 
 Mono Connect.js is a quick and secure way to link bank accounts to Mono from within your app. Mono Connect is a drop-in framework that handles connecting a financial institution to your app (credential validation, multi-factor authentication, error handling, etc). It works on mobile and web.
 
-For accessing customer accounts and interacting with Mono's API (Identity, Transactions, Income, DirectPay) use the server-side Mono API. For complete information about Mono Connect, head to the docs. https://docs.mono.co/docs/ .
+For accessing customer accounts and interacting with Mono's API (Identity, Transactions, Income, DirectPay) use the server-side Mono API. For complete information about Mono Connect, head to the docs. https://docs.withmono.com/docs/ .
 
 ### Getting Started
-Register on the [Mono](https://app.mono.co/dashboard) website and get your public and secret keys.
-Setup a server to [exchange tokens](https://docs.mono.co/reference/authentication-endpoint) to access user financial data with your Mono secret key.
 
+Register on the [Mono](https://app.withmono.com/dashboard) website and get your public and secret keys.
+Setup a server to [exchange tokens](https://docs.withmono.com/reference/authentication-endpoint) to access user financial data with your Mono secret key.
 
 ### How to upgrade to the Mono Widget 2.0
+
 If you already use Mono Connect or DirectPay, you will need to upgrade your widget to version 2 to get access to these new features. To upgrade to v2, take the following steps:
 
-[Log in](https://app.mono.co/dashboard) to your Mono dashboard
+[Log in](https://app.withmono.com/dashboard) to your Mono dashboard
 
-Visit [Preferences](https://app.mono.co/settings/business/preferences) in the Settings section, toggle on the new version of the Mono widget, and confirm the switch.
+Visit [Preferences](https://app.withmono.com/settings/business/preferences) in the Settings section, toggle on the new version of the Mono widget, and confirm the switch.
 
-If you would like to use the new widget and Mono's open banking APIs to build innovative solutions for your customers, you can get [started by creating a Mono account here](https://app.mono.co).
- 
- ##### screenshots
+If you would like to use the new widget and Mono's open banking APIs to build innovative solutions for your customers, you can get [started by creating a Mono account here](https://app.withmono.com).
+
+##### screenshots
+
 <p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/screenshot.png" alt="Screenshot" height="300" />
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/screenshot2.png" alt="Screenshot" height="300" />
@@ -38,11 +39,7 @@ If you would like to use the new widget and Mono's open banking APIs to build in
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot2.png" alt="Web Screenshot" height="300" />
 
 </p>
-/p><p align="center">
-  <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot3.png" alt="Web Screenshot" height="300" />
-
-</p>
-/p><p align="center">
+<p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot4.png" alt="Web Screenshot" height="300" />
 
 </p>
@@ -52,47 +49,47 @@ If you would like to use the new widget and Mono's open banking APIs to build in
 </p>
 
 ## Preview
+
 you can checkout a web preview here https://wiseminds.github.io/mono-flutter
 
 ## Usage
 
 Import `package:mono_flutter/mono_flutter.dart` and use the methods in `MonoFlutter` class.
 
-
 For web support add the following to index.html :
 
- ``` HTML
- <script src="https://connect.withmono.com/connect.js"></script>
-  <script>
-    function setupMonoConnect(key, reference, config, authCode, paymentMode) {
-      const options = {
-        key,
-        reference,
-        onSuccess: onSuccess,
-        onEvent: onEvent,
-        onClose: onClose,
-        onLoad: onLoad
-      };
-      if(paymentMode) {
-            options.scope = "payment";
-        }
-      const MonoConnect = new Connect(options);
-      const configJson = JSON.parse(config ?? `{}`);
-
-      MonoConnect.setup(configJson);
-      
-      if(authCode && String(authCode).length > 0) {
-        MonoConnect.reauthorise(authCode);
-      }
-
-      MonoConnect.open()
+```HTML
+<script src="https://connect.withmono.com/connect.js"></script>
+ <script>
+   function setupMonoConnect(key, reference, data, authCode, scope) {
+     const configJson = JSON.parse(data ?? `{}`);
+     const options = {
+       key,
+       reference,
+       scope, 
+       onSuccess: onSuccess,
+       onEvent: onEvent,
+       onClose: onClose,
+       onLoad: onLoad
+     };
      
-    }
-  </script>
+     const MonoConnect = new Connect(options);
 
- ```
+    MonoConnect.setup(configJson);
+
+     if(authCode && String(authCode).length > 0) {
+       MonoConnect.reauthorise(authCode);
+     }
+
+     MonoConnect.open()
+
+   }
+ </script>
+
+```
 
 Example:
+
 ```dart
 import 'package:mono_flutter/mono_flutter.dart';
 
@@ -113,11 +110,17 @@ class App extends StatelessWidget {
               'YOUR_PUBLIC_KEY_HERE',
               // authCode: 'code_sGjE1Zh48lFR8vr3FkrD',
               reference: DateTime.now().millisecondsSinceEpoch.toString(),
-              config: jsonEncode({
-                "selectedInstitution": {
-                  "id": "5f2d08bf60b92e2888287703",
-                  "auth_method": "internet_banking"
+              scope: "auth", // NEWLY INTRODUCED 
+              data:  // NEWLY INTRODUCED
+                jsonEncode({
+                "customer": {
+                "name": "Samuel Olamide", // REQUIRED
+                "email": "samuel@neem.com", // REQUIRED
+                "identity": {
+                  "type": "bvn",
+                  "number": "2323233239",
                 }
+              }
               }),
               onEvent: (event, data) {
                 print('event: $event, data: $data');
@@ -137,12 +140,29 @@ class App extends StatelessWidget {
 
 ```
 
-Checkout the example project for full implementation
+// FOR NEW CUSTOMERS
+"customer": {
+"name": "Samuel Olamide", // REQUIRED
+"email": "samuel@neem.com", // REQUIRED
+"identity": { // OPTIONAL
+"type": "bvn",
+"number": "2323233239",
+}
+}
 
+---
+
+// FOR RETURNING CUSTOMERS
+"customer": {
+"id": "623625362356125afdea1245" // REQUIRED
+}
+
+Checkout the example project for full implementation
 
 ###Reauthorization
 Passing the [authCode] to the launch command
 This package will automatically call [connect.reauthorise(authCode)]
+
 ```
   connect.reauthorise(authCode);
 ```
@@ -157,19 +177,25 @@ be sent to your webhook, following with mono.events.account_updated once the syn
 data is available.
 
 ### Customizations
+
 For a custom page or with a dialog, use the [MonoFlutterWebView] widget, but this is not supported on the web.
+
 ```dart
  showDialog(
       context: context,
       builder: (c) => MonoWebView(
-        apiKey: 'test_pk_qtys19MqGkmrkGk9RDjc',
-        config: const {
-          "selectedInstitution": {
-            "id": "5f2d08bf60b92e2888287703",
-            "auth_method": "internet_banking"
-          }
+        key: "YOUR_APPS_PUBLIC_KEY_HERE",
+        scope: "auth", // NEWLY INTRODUCED 
+        data: const { // NEWLY INTRODUCED
+            "customer": {
+                "name": "Samuel Olamide", // REQUIRED
+                "email": "samuel@neem.com", // REQUIRED
+                "identity": {
+                  "type": "bvn",
+                  "number": "2323233239",
+                }
+              }
         },
-        reAuthCode: reAuthCode,
         onEvent: (event, data) {
           print('event: $event, data: $data');
         },
@@ -185,6 +211,3 @@ For a custom page or with a dialog, use the [MonoFlutterWebView] widget, but thi
       ),
     );
 ```
-
-
-

@@ -37,8 +37,8 @@ class MonoFlutterWeb {
         onLoad() {
           channel.invokeMethod('onLoad', {});
         }
-        onClose(data) {
-          channel.invokeMethod('onClose', jsonEncode(jsToMap(data)));
+        onClose( ) {
+          // channel.invokeMethod('onClose', jsonEncode(jsToMap(data)));
         }
         onEvent(eventName, data) {
           // print('$eventName, ${jsonEncode(jsToMap(data))}');
@@ -57,9 +57,9 @@ class MonoFlutterWeb {
         setupMonoConnect(
             call.arguments['key'] as String,
             call.arguments['reference'] as String?,
-            call.arguments['config'] as String?,
+            call.arguments['data'] as String?,
             call.arguments['authCode'] as String?,
-            call.arguments['paymentMode'] as bool? ?? false);
+            call.arguments['scope'] as String? ?? "auth");
         return;
       case 'open':
         return open();

@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 class MonoHtml {
-  static build(String key, String reference,
-          [Map<String, dynamic>? config,
-          String? authCode,
-          bool paymentScope = false]) =>
+  static build(
+    String key,
+    String reference,
+    String scope, [
+    Map<String, dynamic>? data,
+    String? authCode,
+
+    // bool paymentScope = false
+  ]) =>
       '''<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -18,36 +23,38 @@ class MonoHtml {
       <script type="text/javascript">
         window.onload = setupMonoConnect;
         function setupMonoConnect() {
-          const paymentScope = $paymentScope;
+          const configJson = JSON.parse(`${jsonEncode({...?data})}`)
+          
           const options = {
              key: "$key",
              reference: "$reference",
-            onSuccess:  (data) => {
+             scope: "$scope" , 
+           
+             onSuccess:  (data) => {
               const response = {"type":"mono.modal.linked", response: {...data}}
               MonoClientInterface.postMessage(JSON.stringify(response))
-            },
+             },
              onEvent: (eventName, data) => {
              const response = { type: 'onEvent', eventName, data }
               MonoClientInterface.postMessage(JSON.stringify(response))
-            },
-            onClose: (data) => {
+              },
+             onClose: (data) => {
               const response = {type: 'mono.modal.closed', response: {...data}}
               MonoClientInterface.postMessage(JSON.stringify(response))
-            },
+             },
               onLoad: ()=> {
               const response = {type: 'mono.modal.onLoad', }
               MonoClientInterface.postMessage(JSON.stringify(response))
             }
           };
-          if(paymentScope) {
-            options.scope = "payment";
-          }
+
+           
           const MonoConnect = new Connect(options);
-          const configJson = JSON.parse(`${jsonEncode(config ?? {})}`)
+       
           const authCode = "$authCode";
 
  
-          MonoConnect.setup(configJson);
+          MonoConnect.setup(configJson); 
 
           if(authCode && String(authCode).length > 2) { 
             MonoConnect.reauthorise(authCode);

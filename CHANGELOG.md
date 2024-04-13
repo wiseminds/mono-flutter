@@ -1,4 +1,5 @@
-## [3.0.0] -12-04-2024
+## [3.0.1] -13-04-2024
+- Updated support for new customer payload
 - Updated dependencies, updated readme
 ## [2.1.0] -01-03-2022
 - Updated dependencies, updated sdk constrants to <4.0.0

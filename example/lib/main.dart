@@ -72,13 +72,17 @@ class MyHomePageState extends State<MyHomePage> {
           MonoFlutter().launch(
             context,
             'test_pk_Ah0rqPm2BgG4Ql59vEM9',
-            paymentMode: true,
+            scope: "auth",
             // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),
-            config: {
-              "selectedInstitution": {
-                "id": "5f2d08bf60b92e2888287703",
-                "auth_method": "internet_banking"
+            data: {
+              "customer": {
+                "name": "Samuel Olamide", // REQUIRED
+                "email": "samuel@neem.com", // REQUIRED
+                "identity": {
+                  "type": "bvn",
+                  "number": "2323233239",
+                }
               }
             },
             onEvent: (event, data) {

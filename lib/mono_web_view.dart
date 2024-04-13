@@ -34,11 +34,11 @@ class MonoWebView extends StatefulWidget {
   final String? paymentUrl;
 
   /// set to true if you want to initiate a direct payment
-  final bool paymentMode;
+  final String scope;
 
   final Function(MonoEvent event, MonoEventData data)? onEvent;
 
-  final Map<String, dynamic>? config;
+  final Map<String, dynamic>? data;
 
   const MonoWebView(
       {super.key,
@@ -50,9 +50,9 @@ class MonoWebView extends StatefulWidget {
       this.onLoad,
       this.paymentUrl,
       this.reference,
-      this.config,
+      this.data,
       this.reAuthCode = '',
-      required this.paymentMode});
+      this.scope = "auth"});
 
   @override
   MonoWebViewState createState() => MonoWebViewState();
@@ -94,6 +94,7 @@ class MonoWebViewState extends State<MonoWebView> {
           setState(() {});
         },
         onWebResourceError: (WebResourceError error) {
+          print('${error.url}, ${error.description}, ${error.errorCode}');
           isLoading.value = false;
           setState(() {
             hasError.value = true;
@@ -106,11 +107,14 @@ class MonoWebViewState extends State<MonoWebView> {
       ..loadHtmlString(MonoHtml.build(
           widget.apiKey,
           widget.reference ?? 15.getRandomString,
-          widget.config,
+          widget.scope,
+          widget.data,
           widget.reAuthCode));
     // ..loadRequest(Uri.parse(('data:text/html;base64,$contentBase64')));
 
     super.initState();
+    print(MonoHtml.build(widget.apiKey, widget.reference ?? 15.getRandomString,
+        widget.scope, widget.data, widget.reAuthCode));
   }
 
   @override
@@ -199,7 +203,7 @@ class MonoWebViewState extends State<MonoWebView> {
     String? key = body!['type'];
     if (key != null) {
       switch (key) {
-        // case 'mono.connect.widget.account_linked':
+        // case 'withmono.comnnect.widget.account_linked':
         case 'mono.modal.linked':
           var response = body['response'];
           if (response == null) return;
@@ -207,7 +211,7 @@ class MonoWebViewState extends State<MonoWebView> {
           if (widget.onSuccess != null) widget.onSuccess!(code);
           if (mounted) Navigator.of(context).pop(code);
           break;
-        // case 'mono.connect.widget.closed':
+        // case 'withmono.comnnect.widget.closed':
         case 'mono.modal.closed':
           String? code;
           try {

@@ -43,8 +43,8 @@ class MonoFlutter {
   /// [paymentMode] set to true if you want to initiate a direct payment
   launch(BuildContext context, String key,
       {String? reference,
-      bool paymentMode = false,
-      Map<String, dynamic>? config,
+      String scope ="auth",
+      Map<String, dynamic>? data,
       String? reAuthCode,
       Function()? onLoad,
       Function(String?)? onClosed,
@@ -54,9 +54,9 @@ class MonoFlutter {
       channel.invokeMethod('setup', {
         'key': key,
         'reference': reference ?? 15.getRandomString,
-        'config': jsonEncode(config),
+        'data': jsonEncode(data),
         'authCode': reAuthCode,
-        'paymentMode': paymentMode
+        'scope': scope
       });
 
       channel.setMethodCallHandler((call) async {
@@ -65,12 +65,8 @@ class MonoFlutter {
             if (onLoad != null) onLoad();
             return true;
           case 'onClose':
-            final args = (jsonDecode(call.arguments.toString())
-                    as Map<Object?, Object?>)
-                .map<String, Object?>((key, value) => MapEntry('$key', value));
-
-            if (kDebugMode) print('PRINTING MONO CODE: ${{...args}['code']}');
-            onClosed?.call({...args}['code'].toString());
+             
+            onClosed?.call(null);
 
             return true;
           case 'onSuccess':
@@ -79,7 +75,7 @@ class MonoFlutter {
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
 
             if (onSuccess != null) {
-              if (kDebugMode) print('PRINTING MONO CODE: ${args['code']}');
+              if (kDebugMode) print('PRINTING MONO CODE-Success: ${args['code']}');
               onSuccess(args['code'].toString());
             }
             return true;
@@ -105,16 +101,20 @@ class MonoFlutter {
           .push(CupertinoPageRoute(
               builder: (c) => MonoWebView(
                   apiKey: key,
-                  config: config,
+                  data: data,
                   reAuthCode: reAuthCode ?? '',
                   onEvent: onEvent,
                   onClosed: onClosed,
                   onLoad: onLoad,
-                  paymentMode: paymentMode,
+                  scope: "auth",
+                  // paymentMode: paymentMode,
                   onSuccess: onSuccess,
                   reference: reference)))
-          // ignore: avoid_print
-          .then((code) => print(code));
+          .then((code) {
+        if (kDebugMode) {
+          print(code);
+        }
+      });
     }
   }
 }
