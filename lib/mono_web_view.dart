@@ -94,7 +94,6 @@ class MonoWebViewState extends State<MonoWebView> {
           setState(() {});
         },
         onWebResourceError: (WebResourceError error) {
-          print('${error.url}, ${error.description}, ${error.errorCode}');
           isLoading.value = false;
           setState(() {
             hasError.value = true;
@@ -113,8 +112,6 @@ class MonoWebViewState extends State<MonoWebView> {
     // ..loadRequest(Uri.parse(('data:text/html;base64,$contentBase64')));
 
     super.initState();
-    print(MonoHtml.build(widget.apiKey, widget.reference ?? 15.getRandomString,
-        widget.scope, widget.data, widget.reAuthCode));
   }
 
   @override

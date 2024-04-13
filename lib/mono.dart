@@ -16,8 +16,8 @@ external void setup(Object obj);
 external void open();
 
 @JS('setupMonoConnect')
-external void setupMonoConnect(String key,
-    String? reference, String? data, String? authCode, String? scope);
+external void setupMonoConnect(String key, String? reference, String? data,
+    String? authCode, String? scope);
 
 dynamic _nested(dynamic val) {
   if (val.runtimeType.toString() == 'LegacyJavaScriptObject') {

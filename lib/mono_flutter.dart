@@ -43,7 +43,7 @@ class MonoFlutter {
   /// [paymentMode] set to true if you want to initiate a direct payment
   launch(BuildContext context, String key,
       {String? reference,
-      String scope ="auth",
+      String scope = "auth",
       Map<String, dynamic>? data,
       String? reAuthCode,
       Function()? onLoad,
@@ -65,7 +65,6 @@ class MonoFlutter {
             if (onLoad != null) onLoad();
             return true;
           case 'onClose':
-             
             onClosed?.call(null);
 
             return true;
@@ -75,7 +74,9 @@ class MonoFlutter {
                 .map<String, Object?>((key, value) => MapEntry('$key', value));
 
             if (onSuccess != null) {
-              if (kDebugMode) print('PRINTING MONO CODE-Success: ${args['code']}');
+              if (kDebugMode) {
+                print('PRINTING MONO CODE-Success: ${args['code']}');
+              }
               onSuccess(args['code'].toString());
             }
             return true;
