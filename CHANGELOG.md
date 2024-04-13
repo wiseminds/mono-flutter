@@ -1,3 +1,5 @@
+## [3.0.2] -13-04-2024
+- Updated screenshot
 ## [3.0.1] -13-04-2024
 - Updated support for new customer payload
 - Updated dependencies, updated readme

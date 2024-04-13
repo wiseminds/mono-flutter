@@ -43,7 +43,7 @@ If you would like to use the new widget and Mono's open banking APIs to build in
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot4.png" alt="Web Screenshot" height="300" />
 
 </p>
-/p><p align="center">
+<p align="center">
   <img src="https://github.com/wiseminds/mono-flutter/raw/main/screenshot/web-screenshot5.png" alt="Web Screenshot" height="300" />
 
 </p>
@@ -141,6 +141,7 @@ class App extends StatelessWidget {
 ```
 
 // FOR NEW CUSTOMERS
+```javascript
 "customer": {
 "name": "Samuel Olamide", // REQUIRED
 "email": "samuel@neem.com", // REQUIRED
@@ -149,13 +150,15 @@ class App extends StatelessWidget {
 "number": "2323233239",
 }
 }
-
+```
 ---
 
 // FOR RETURNING CUSTOMERS
+```javascript
 "customer": {
 "id": "623625362356125afdea1245" // REQUIRED
 }
+```
 
 Checkout the example project for full implementation
 
