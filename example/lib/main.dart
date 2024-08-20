@@ -7,7 +7,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -71,7 +71,7 @@ class MyHomePageState extends State<MyHomePage> {
           // if (kIsWeb) {
           MonoFlutter().launch(
             context,
-            'test_pk_Ah0rqPm2BgG4Ql59vEM9',
+            'live_pk_i3bamg4plgftxom3ssei',
             scope: "auth",
             // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -79,10 +79,7 @@ class MyHomePageState extends State<MyHomePage> {
               "customer": {
                 "name": "Samuel Olamide", // REQUIRED
                 "email": "samuel@neem.com", // REQUIRED
-                "identity": {
-                  "type": "bvn",
-                  "number": "2323233239",
-                }
+                "identity": {"type": "bvn", "number": "2323233239"}
               }
             },
             onEvent: (event, data) {
