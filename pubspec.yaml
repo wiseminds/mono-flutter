@@ -28,7 +28,7 @@ flutter:
       web:
         pluginClass: MonoFlutterWeb
         fileName: mono_flutter_web.dart
-      ios:
-        default_package: webview_flutter
-      android:
-        default_package: webview_flutter
+      # ios:
+      #   default_package: webview_flutter
+      # android:
+      #   default_package: webview_flutter
