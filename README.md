@@ -10,8 +10,27 @@ For accessing customer accounts and interacting with Mono's API (Identity, Trans
 
 ### Getting Started
 
-Register on the [Mono](https://app.withmono.com/dashboard) website and get your public and secret keys.
-Setup a server to [exchange tokens](https://docs.withmono.com/reference/authentication-endpoint) to access user financial data with your Mono secret key.
+- Register on the [Mono](https://app.withmono.com/dashboard) website and get your public and secret keys.
+- Setup a server to [exchange tokens](https://docs.withmono.com/reference/authentication-endpoint) to access user financial data with your Mono secret key.
+
+### iOS
+
+- Add the key `Privacy - Camera Usage Description` and a usage description to your `Info.plist`.
+
+If editing `Info.plist` as text, add:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>your usage description here</string>
+```
+
+### Android
+
+State the camera permission in your `android/app/src/main/AndroidManifest.xml` file.
+
+```xml
+<uses-permission android:name="android.permission.CAMERA"/>
+```
 
 ### How to upgrade to the Mono Widget 2.0
 
