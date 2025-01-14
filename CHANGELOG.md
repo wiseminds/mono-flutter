@@ -1,3 +1,6 @@
+## [4.0.1] -14-01-2025
+- Fixed blank selfie screen
+- Allow mono widget load regardless of the status of the permission
 ## [4.0.0] -14-01-2025
 - Fixed blank selfie screen
 ## [3.0.2] -13-04-2024
