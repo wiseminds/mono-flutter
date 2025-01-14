@@ -22,6 +22,8 @@ If editing `Info.plist` as text, add:
 ```xml
 <key>NSCameraUsageDescription</key>
 <string>your usage description here</string>
+<key>NSMicrophoneUsageDescription</key>
+<string>your usage description here</string>
 ```
 
 ### Android
