@@ -88,10 +88,10 @@ class MyHomePageState extends State<MyHomePage> {
               //   id: "6759f68cb587236111eac1d4", // REQUIRED
               // ),
             ),
-            selectedInstitution: const ConnectInstitution(
-              id: "5f2d08be60b92e2888287702",
-              authMethod: ConnectAuthMethod.mobileBanking,
-            ),
+            // selectedInstitution: const ConnectInstitution(
+            //   id: "5f2d08be60b92e2888287702",
+            //   authMethod: ConnectAuthMethod.mobileBanking,
+            // ),
             onEvent: (event, data) {
               if (kDebugMode) print('event: $event, data: $data');
             },

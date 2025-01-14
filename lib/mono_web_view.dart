@@ -216,14 +216,13 @@ class MonoWebViewState extends State<MonoWebView> {
     }
 
     if (!isCameraGranted) {
-      final result = await Permission.camera.request();
-
-      if (result == PermissionStatus.granted) {
-        await loadRequest();
-      }
-    } else {
-      await loadRequest();
+      // final result =
+      await Permission.camera.request();
     }
+
+    // if (result == PermissionStatus.granted) {
+    await loadRequest();
+    // }
   }
 
   Future<void> loadRequest() {
