@@ -10,8 +10,27 @@ For accessing customer accounts and interacting with Mono's API (Identity, Trans
 
 ### Getting Started
 
-Register on the [Mono](https://app.withmono.com/dashboard) website and get your public and secret keys.
-Setup a server to [exchange tokens](https://docs.withmono.com/reference/authentication-endpoint) to access user financial data with your Mono secret key.
+- Register on the [Mono](https://app.withmono.com/dashboard) website and get your public and secret keys.
+- Setup a server to [exchange tokens](https://docs.withmono.com/reference/authentication-endpoint) to access user financial data with your Mono secret key.
+
+### iOS
+
+- Add the key `Privacy - Camera Usage Description` and a usage description to your `Info.plist`.
+
+If editing `Info.plist` as text, add:
+
+```xml
+<key>NSCameraUsageDescription</key>
+<string>your usage description here</string>
+```
+
+### Android
+
+State the camera permission in your `android/app/src/main/AndroidManifest.xml` file.
+
+```xml
+<uses-permission android:name="android.permission.CAMERA"/>
+```
 
 ### How to upgrade to the Mono Widget 2.0
 
@@ -122,6 +141,23 @@ class App extends StatelessWidget {
                 }
               }
               }),
+              customer: MonoCustomer(
+                  newCustomer: MonoNewCustomerModel(
+                  name: "Samuel Olamide", // REQUIRED
+                  email: "samuel@neem.com", // REQUIRED
+                  identity: MonoNewCustomerIdentity(
+                    type: "bvn",
+                    number: "2323233239",
+                  ),
+                ),
+                existingCustomer: MonoExistingCustomerModel(
+                  id: "6759f68cb587236111eac1d4", // REQUIRED
+                ),
+              ),
+              selectedInstitution: ConnectInstitution(
+                id: "5f2d08be60b92e2888287702",
+                authMethod: ConnectAuthMethod.mobileBanking,
+              ),
               onEvent: (event, data) {
                 print('event: $event, data: $data');
               },
@@ -141,23 +177,22 @@ class App extends StatelessWidget {
 ```
 
 // FOR NEW CUSTOMERS
-```javascript
-"customer": {
-"name": "Samuel Olamide", // REQUIRED
-"email": "samuel@neem.com", // REQUIRED
-"identity": { // OPTIONAL
-"type": "bvn",
-"number": "2323233239",
-}
-}
+```dart
+newCustomer: MonoNewCustomerModel(
+    name: "Samuel Olamide", // REQUIRED
+    email: "samuel@neem.com", // REQUIRED
+    identity: MonoNewCustomerIdentity(
+    type: "bvn",
+    number: "2323233239",
+)
 ```
 ---
 
 // FOR RETURNING CUSTOMERS
-```javascript
-"customer": {
-"id": "623625362356125afdea1245" // REQUIRED
-}
+```dart
+MonoExistingCustomerModel(
+    id: "6759f68cb587236111eac1d4", // REQUIRED
+)
 ```
 
 Checkout the example project for full implementation
@@ -189,16 +224,23 @@ For a custom page or with a dialog, use the [MonoFlutterWebView] widget, but thi
       builder: (c) => MonoWebView(
         key: "YOUR_APPS_PUBLIC_KEY_HERE",
         scope: "auth", // NEWLY INTRODUCED 
-        data: const { // NEWLY INTRODUCED
-            "customer": {
-                "name": "Samuel Olamide", // REQUIRED
-                "email": "samuel@neem.com", // REQUIRED
-                "identity": {
-                  "type": "bvn",
-                  "number": "2323233239",
-                }
-              }
-        },
+        customer: MonoCustomer(
+            newCustomer: MonoNewCustomerModel(
+            name: "Samuel Olamide", // REQUIRED
+            email: "samuel@neem.com", // REQUIRED
+            identity: MonoNewCustomerIdentity(
+              type: "bvn",
+              number: "2323233239",
+            ),
+          ),
+          existingCustomer: MonoExistingCustomerModel(
+            id: "6759f68cb587236111eac1d4", // REQUIRED
+          ),
+        ),
+        selectedInstitution: ConnectInstitution(
+          id: "5f2d08be60b92e2888287702",
+          authMethod: ConnectAuthMethod.mobileBanking,
+        ),
         onEvent: (event, data) {
           print('event: $event, data: $data');
         },

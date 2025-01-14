@@ -6,18 +6,25 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mono_flutter/extensions/map.dart';
-import 'package:mono_flutter/extensions/num.dart';
+import 'package:mono_flutter/models/models.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-import 'models/mono_event.dart';
-import 'models/mono_event_data.dart';
-import 'mono_html.dart';
+const String urlScheme = 'https';
+const String connectHost = 'connect.mono.co';
+const String version = '2023-12-14';
 
 class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
   final String apiKey, reAuthCode;
 
   final String? reference;
+
+  /// The customer objects expects the following keys based on the following conditions:
+  /// New Customers: For new customers, the customer object expects the user’s name, email and identity
+  /// Existing Customers: For existing customers, the customer object expects only the customer ID.
+  final MonoCustomer customer;
 
   /// a function called when transaction succeeds
   final Function(String code)? onSuccess;
@@ -38,21 +45,24 @@ class MonoWebView extends StatefulWidget {
 
   final Function(MonoEvent event, MonoEventData data)? onEvent;
 
-  final Map<String, dynamic>? data;
+  /// Allows an optional selected institution to be passed.
+  final ConnectInstitution? selectedInstitution;
 
-  const MonoWebView(
-      {super.key,
-      required this.apiKey,
-      this.error,
-      this.onEvent,
-      this.onSuccess,
-      this.onClosed,
-      this.onLoad,
-      this.paymentUrl,
-      this.reference,
-      this.data,
-      this.reAuthCode = '',
-      this.scope = "auth"});
+  const MonoWebView({
+    super.key,
+    required this.apiKey,
+    required this.customer,
+    this.error,
+    this.onEvent,
+    this.onSuccess,
+    this.onClosed,
+    this.onLoad,
+    this.paymentUrl,
+    this.reference,
+    this.selectedInstitution,
+    this.reAuthCode = '',
+    this.scope = "auth",
+  });
 
   @override
   MonoWebViewState createState() => MonoWebViewState();
@@ -60,25 +70,32 @@ class MonoWebView extends StatefulWidget {
 
 class MonoWebViewState extends State<MonoWebView> {
   late WebViewController _webViewController;
-  // final url = 'https://connect.withmono.com/?key=';
-  ValueNotifier<bool> isLoading = ValueNotifier(false);
+
+  ValueNotifier<bool> isLoading = ValueNotifier(true);
   ValueNotifier<bool> hasError = ValueNotifier(false);
-
-  // late String contentBase64;
-
-  // await controller.loadUrl('data:text/html;base64,$contentBase64');
 
   @override
   void initState() {
-    // contentBase64 = base64Encode(const Utf8Encoder().convert(MonoHtml.build(
-    //     widget.apiKey,
-    //     widget.reference ?? 15.getRandomString,
-    //     widget.config,
-    //     widget.reAuthCode)));
-    _webViewController = WebViewController()
+    super.initState();
+
+    late final PlatformWebViewControllerCreationParams params;
+    params = WebViewPlatform.instance is WebKitWebViewPlatform
+        ? WebKitWebViewControllerCreationParams(
+            allowsInlineMediaPlayback: true,
+          )
+        : const PlatformWebViewControllerCreationParams();
+
+    _webViewController = WebViewController.fromPlatformCreationParams(
+      params,
+      onPermissionRequest: (request) => request.grant(),
+    );
+
+    _webViewController
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..addJavaScriptChannel('MonoClientInterface',
-          onMessageReceived: _monoJavascriptChannel)
+      ..addJavaScriptChannel(
+        'MonoClientInterface',
+        onMessageReceived: _monoJavascriptChannel,
+      )
       ..setNavigationDelegate(NavigationDelegate(
         onProgress: (int progress) {
           // Update loading bar.
@@ -90,28 +107,22 @@ class MonoWebViewState extends State<MonoWebView> {
           });
         },
         onPageFinished: (String url) {
-          isLoading.value = false;
-          setState(() {});
+          setState(() {
+            isLoading.value = false;
+          });
         },
         onWebResourceError: (WebResourceError error) {
-          isLoading.value = false;
           setState(() {
+            isLoading.value = false;
             hasError.value = true;
           });
         },
         onNavigationRequest: (NavigationRequest request) {
           return NavigationDecision.navigate;
         },
-      ))
-      ..loadHtmlString(MonoHtml.build(
-          widget.apiKey,
-          widget.reference ?? 15.getRandomString,
-          widget.scope,
-          widget.data,
-          widget.reAuthCode));
-    // ..loadRequest(Uri.parse(('data:text/html;base64,$contentBase64')));
+      ));
 
-    super.initState();
+    confirmPermissionsAndLoad();
   }
 
   @override
@@ -120,45 +131,53 @@ class MonoWebViewState extends State<MonoWebView> {
       canPop: true,
       child: Material(
         child: GestureDetector(
-            onTap: () {
-              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-            },
-            child: SafeArea(
-              child: Stack(children: [
+          onTap: () {
+            WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+          },
+          child: SafeArea(
+            child: Stack(
+              children: [
                 Container(
                   decoration: BoxDecoration(
-                      border: Border.all(color: Colors.transparent)),
+                    border: Border.all(color: Colors.transparent),
+                  ),
                   child: WebViewWidget(
                     controller: _webViewController,
                     gestureRecognizers:
                         <Factory<OneSequenceGestureRecognizer>>{}..add(
                             Factory<TapGestureRecognizer>(
-                                () => TapGestureRecognizer()
-                                  ..onTapDown = (tap) {
-                                    SystemChannels.textInput.invokeMethod(
-                                        'TextInput.hide'); //This will hide keyboard on tapdown
-                                  })),
+                              () => TapGestureRecognizer()
+                                ..onTapDown = (tap) {
+                                  SystemChannels.textInput.invokeMethod(
+                                    'TextInput.hide',
+                                  ); //This will hide keyboard on tapdown
+                                },
+                            ),
+                          ),
                   ),
                 ),
                 ValueListenableBuilder<bool>(
-                    valueListenable: isLoading,
-                    builder: (context, value, child) {
-                      if (value) {
-                        return const Center(
-                            child: CupertinoActivityIndicator());
-                      }
-                      return const SizedBox();
-                    }),
+                  valueListenable: isLoading,
+                  builder: (context, value, child) {
+                    if (value) {
+                      return const Center(child: CupertinoActivityIndicator());
+                    }
+                    return const SizedBox();
+                  },
+                ),
                 ValueListenableBuilder<bool>(
-                    valueListenable: hasError,
-                    builder: (context, value, child) {
-                      if (value) {
-                        return widget.error ?? _error;
-                      }
-                      return const SizedBox();
-                    })
-              ]),
-            )),
+                  valueListenable: hasError,
+                  builder: (context, value, child) {
+                    if (value) {
+                      return widget.error ?? _error;
+                    }
+                    return const SizedBox();
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -185,6 +204,56 @@ class MonoWebViewState extends State<MonoWebView> {
         ],
       ));
 
+  Future<void> confirmPermissionsAndLoad() async {
+    bool isCameraGranted;
+
+    if (!kIsWeb) {
+      // Request camera permission
+      final cameraStatus = await Permission.camera.status;
+      isCameraGranted = cameraStatus.isGranted;
+    } else {
+      isCameraGranted = true;
+    }
+
+    if (!isCameraGranted) {
+      final result = await Permission.camera.request();
+
+      if (result == PermissionStatus.granted) {
+        await loadRequest();
+      }
+    } else {
+      await loadRequest();
+    }
+  }
+
+  Future<void> loadRequest() {
+    final customerJson = {'customer': widget.customer.toMap()};
+    final data = json.encode(customerJson);
+
+    String? extraData;
+    if (widget.selectedInstitution != null) {
+      extraData = widget.selectedInstitution!.toJson();
+    }
+
+    final queryParameters = {
+      'key': widget.apiKey,
+      'version': version,
+      'scope': widget.scope,
+      'data': data,
+      'reauth_token': widget.reAuthCode,
+      if (widget.reference != null) 'reference': widget.reference,
+      if (extraData != null) 'selectedInstitution': extraData,
+    };
+
+    final uri = Uri(
+      scheme: urlScheme,
+      host: connectHost,
+      queryParameters: queryParameters,
+    );
+
+    return _webViewController.loadRequest(uri);
+  }
+
   /// javascript channel for events sent by mono
   void _monoJavascriptChannel(JavaScriptMessage message) {
     if (kDebugMode) print('MonoClientInterface, ${message.message}');
@@ -200,16 +269,14 @@ class MonoWebViewState extends State<MonoWebView> {
     String? key = body!['type'];
     if (key != null) {
       switch (key) {
-        // case 'withmono.comnnect.widget.account_linked':
-        case 'mono.modal.linked':
+        case "mono.connect.widget.account_linked":
           var response = body['response'];
           if (response == null) return;
           var code = response['code'];
           if (widget.onSuccess != null) widget.onSuccess!(code);
           if (mounted) Navigator.of(context).pop(code);
           break;
-        // case 'withmono.comnnect.widget.closed':
-        case 'mono.modal.closed':
+        case 'mono.connect.widget.closed':
           String? code;
           try {
             code = body['data']['code'];
@@ -223,6 +290,7 @@ class MonoWebViewState extends State<MonoWebView> {
           widget.onClosed?.call(code);
           if (mounted) Navigator.of(context).pop(code);
           break;
+        case 'mono.connect.widget_opened':
         case 'mono.modal.onLoad':
           if (mounted && widget.onLoad != null) widget.onLoad!();
           break;
