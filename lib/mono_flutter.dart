@@ -6,11 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:mono_flutter/extensions/num.dart';
+import 'package:mono_flutter/models/models.dart';
 
-import 'models/mono_event.dart';
-import 'models/mono_event_data.dart';
 import 'mono_web_view.dart';
 
+export 'models/models.dart';
 export 'mono_web_view.dart';
 
 class MonoFlutter {
@@ -41,20 +41,24 @@ class MonoFlutter {
   ///  be sent to your webhook, following with mono. events. account_updated once the synced
   ///  data is available.
   /// [paymentMode] set to true if you want to initiate a direct payment
-  launch(BuildContext context, String key,
-      {String? reference,
-      String scope = "auth",
-      Map<String, dynamic>? data,
-      String? reAuthCode,
-      Function()? onLoad,
-      Function(String?)? onClosed,
-      Function(MonoEvent, MonoEventData)? onEvent,
-      Function(String)? onSuccess}) {
+  launch(
+    BuildContext context,
+    String key, {
+    required MonoCustomer customer,
+    String scope = "auth",
+    String? reference,
+    String? reAuthCode,
+    ConnectInstitution? selectedInstitution,
+    Function()? onLoad,
+    Function(String?)? onClosed,
+    Function(MonoEvent, MonoEventData)? onEvent,
+    Function(String)? onSuccess,
+  }) {
     if (kIsWeb) {
       channel.invokeMethod('setup', {
         'key': key,
         'reference': reference ?? 15.getRandomString,
-        'data': jsonEncode(data),
+        'data': jsonEncode({'customer': customer.toMap()}),
         'authCode': reAuthCode,
         'scope': scope
       });
@@ -99,19 +103,22 @@ class MonoFlutter {
       // return
     } else {
       Navigator.of(context)
-          .push(CupertinoPageRoute(
-              builder: (c) => MonoWebView(
-                  apiKey: key,
-                  data: data,
-                  reAuthCode: reAuthCode ?? '',
-                  onEvent: onEvent,
-                  onClosed: onClosed,
-                  onLoad: onLoad,
-                  scope: "auth",
-                  // paymentMode: paymentMode,
-                  onSuccess: onSuccess,
-                  reference: reference)))
-          .then((code) {
+          .push(
+        CupertinoPageRoute(
+          builder: (c) => MonoWebView(
+            apiKey: key,
+            customer: customer,
+            reAuthCode: reAuthCode ?? '',
+            onEvent: onEvent,
+            onClosed: onClosed,
+            onLoad: onLoad,
+            scope: "auth",
+            selectedInstitution: selectedInstitution,
+            onSuccess: onSuccess,
+            reference: reference,
+          ),
+        ),
+      ).then((code) {
         if (kDebugMode) {
           print(code);
         }

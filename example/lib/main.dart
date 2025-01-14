@@ -75,13 +75,23 @@ class MyHomePageState extends State<MyHomePage> {
             scope: "auth",
             // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),
-            data: {
-              "customer": {
-                "name": "Samuel Olamide", // REQUIRED
-                "email": "samuel@neem.com", // REQUIRED
-                "identity": {"type": "bvn", "number": "2323233239"}
-              }
-            },
+            customer: const MonoCustomer(
+              newCustomer: MonoNewCustomerModel(
+                name: "Samuel Olamide", // REQUIRED
+                email: "samuel@neem.com", // REQUIRED
+                identity: MonoNewCustomerIdentity(
+                  type: "bvn",
+                  number: "2323233239",
+                ),
+              ),
+              // existingCustomer: MonoExistingCustomerModel(
+              //   id: "6759f68cb587236111eac1d4", // REQUIRED
+              // ),
+            ),
+            selectedInstitution: const ConnectInstitution(
+              id: "5f2d08be60b92e2888287702",
+              authMethod: ConnectAuthMethod.mobileBanking,
+            ),
             onEvent: (event, data) {
               if (kDebugMode) print('event: $event, data: $data');
             },
