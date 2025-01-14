@@ -118,7 +118,8 @@ class MonoFlutter {
             reference: reference,
           ),
         ),
-      ).then((code) {
+      )
+          .then((code) {
         if (kDebugMode) {
           print(code);
         }

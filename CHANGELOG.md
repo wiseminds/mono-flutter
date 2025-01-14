@@ -1,3 +1,5 @@
+## [3.0.2] -14-01-2025
+- Fixed blank selfie screen
 ## [3.0.2] -13-04-2024
 - Updated screenshot
 ## [3.0.1] -13-04-2024
