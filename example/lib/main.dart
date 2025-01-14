@@ -71,7 +71,7 @@ class MyHomePageState extends State<MyHomePage> {
           // if (kIsWeb) {
           MonoFlutter().launch(
             context,
-            'live_pk_i3bamg4plgftxom3ssei', //  'live_pk_i3bamg4plgftxom3ssei',
+             'live_pk_i3bamg4plgftxom3ssei',
             scope: "auth",
             // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -88,10 +88,10 @@ class MyHomePageState extends State<MyHomePage> {
               //   id: "6759f68cb587236111eac1d4", // REQUIRED
               // ),
             ),
-            selectedInstitution: const ConnectInstitution(
-              id: "5f2d08be60b92e2888287702",
-              authMethod: ConnectAuthMethod.mobileBanking,
-            ),
+            // selectedInstitution: const ConnectInstitution(
+            //   id: "5f2d08be60b92e2888287702",
+            //   authMethod: ConnectAuthMethod.mobileBanking,
+            // ),
             onEvent: (event, data) {
               if (kDebugMode) print('event: $event, data: $data');
             },
