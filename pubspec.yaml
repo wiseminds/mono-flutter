@@ -4,25 +4,25 @@ version: 2.1.0
 homepage: https://github.com/wiseminds/mono-flutter
 
 environment:
-  sdk: ">=2.19.0 <4.0.0"
-  flutter: ">=2.0.0"
+  sdk: '>=2.19.0 <4.0.0'
+  flutter: '>=2.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_web_plugins:
-    sdk: flutter  
+    sdk: flutter
   webview_flutter: ^4.2.1
   js: ^0.7.0
-  sentry_flutter: ^7.13.1
+  sentry_flutter: ^8.13.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1  
+  flutter_lints: ^2.0.1
 
   # plugin_platform_interface: ^2.0.0
- 
+
 flutter:
   plugin:
     implements: mono_flutter
@@ -32,5 +32,5 @@ flutter:
         fileName: mono_flutter_web.dart
       ios:
         default_package: webview_flutter
-      android:  
+      android:
         default_package: webview_flutter
