@@ -1,3 +1,5 @@
+## [4.0.3] -10-02-2025
+- Added new closed event
 ## [4.0.2] -14-01-2025
 - Fixed blank selfie screen
 - Darkmode support

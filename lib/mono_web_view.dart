@@ -282,6 +282,7 @@ class MonoWebViewState extends State<MonoWebView> {
           if (mounted) Navigator.of(context).pop(code);
           break;
         case 'mono.connect.widget.closed':
+        case 'mono.modal.closed':
           String? code;
           try {
             code = body['data']['code'];
