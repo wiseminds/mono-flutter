@@ -14,6 +14,8 @@ import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 const String urlScheme = 'https';
 const String connectHost = 'connect.mono.co';
 const String version = '2023-12-14';
+const darkMode =
+    'document.head.appendChild(document.createElement("style")).innerHTML="html { filter: invert(.95) hue-rotate(180deg) }"';
 
 class MonoWebView extends StatefulWidget {
   /// Public API key gotten from your mono dashboard
@@ -110,6 +112,9 @@ class MonoWebViewState extends State<MonoWebView> {
           setState(() {
             isLoading.value = false;
           });
+          if (Theme.of(context).brightness == Brightness.dark) {
+            _webViewController.runJavaScript(darkMode);
+          }
         },
         onWebResourceError: (WebResourceError error) {
           setState(() {
@@ -222,6 +227,7 @@ class MonoWebViewState extends State<MonoWebView> {
 
     // if (result == PermissionStatus.granted) {
     await loadRequest();
+
     // }
   }
 
@@ -276,6 +282,7 @@ class MonoWebViewState extends State<MonoWebView> {
           if (mounted) Navigator.of(context).pop(code);
           break;
         case 'mono.connect.widget.closed':
+        case 'mono.modal.closed':
           String? code;
           try {
             code = body['data']['code'];

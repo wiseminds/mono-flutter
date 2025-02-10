@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        // brightness: Brightness.dark,
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -71,7 +72,7 @@ class MyHomePageState extends State<MyHomePage> {
           // if (kIsWeb) {
           MonoFlutter().launch(
             context,
-             'live_pk_i3bamg4plgftxom3ssei',
+            'live_pk_i3bamg4plgftxom3ssei',
             scope: "auth",
             // reAuthCode: 'code_7ZSg9UB0sZsMSL3ygb6X',
             reference: DateTime.now().millisecondsSinceEpoch.toString(),

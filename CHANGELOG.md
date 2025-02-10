@@ -1,3 +1,8 @@
+## [4.0.3] -10-02-2025
+- Added new closed event
+## [4.0.2] -14-01-2025
+- Fixed blank selfie screen
+- Darkmode support
 ## [4.0.1] -14-01-2025
 - Fixed blank selfie screen
 - Allow mono widget load regardless of the status of the permission
