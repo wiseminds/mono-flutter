@@ -1,3 +1,5 @@
+## [4.0.4] -10-02-2025
+- Prevent double modal closure
 ## [4.0.3] -10-02-2025
 - Added new closed event
 ## [4.0.2] -14-01-2025
