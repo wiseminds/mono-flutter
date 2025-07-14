@@ -268,8 +268,8 @@ class MonoWebViewState extends State<MonoWebView> {
     }
     handleResponse(res as Map<String, dynamic>);
   }
-  bool isClosed = false;
 
+  bool isClosed = false;
 
   /// parse event from javascript channel
   void handleResponse(Map<String, dynamic>? body) {
@@ -296,9 +296,9 @@ class MonoWebViewState extends State<MonoWebView> {
           if (code != null) widget.onSuccess?.call(code);
 
           widget.onClosed?.call(code);
-          isClosed = true;
-          
-           if (mounted && !isClosed) {
+
+          if (mounted && !isClosed) {
+            isClosed = true;
             Navigator.of(context).pop(code);
           }
           break;
